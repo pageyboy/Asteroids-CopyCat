@@ -19,6 +19,16 @@ namespace Exercise1
         static void Main(string[] args)
         {
 
+            Deck myDeck = new Deck();
+            Card[] myCards = new Card[5];
+            myDeck.Shuffle();
+            myCards[0] = myDeck.TakeTopCard();
+            myCards[0].FlipOver();
+            Console.WriteLine(myCards[0].Rank + " of " + myCards[0].Suit);
+            myCards[1] = myDeck.TakeTopCard();
+            myCards[1].FlipOver();
+            Console.WriteLine(myCards[1].Rank + " of " + myCards[1].Suit);
+
             Console.WriteLine();
         }
     }

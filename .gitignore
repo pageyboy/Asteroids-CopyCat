@@ -19,7 +19,7 @@ obj/
 *.pidb
 *.booproj
 *.svd
-bin/
+bin
 
 # OS Generated
 desktop.ini
