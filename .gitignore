@@ -19,8 +19,7 @@ obj/
 *.pidb
 *.booproj
 *.svd
-*/**/bin/Debug/
-*/**/bin/Release/
+bin/
 
 # OS Generated
 desktop.ini
