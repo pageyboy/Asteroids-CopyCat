@@ -19,8 +19,8 @@ obj/
 *.pidb
 *.booproj
 *.svd
-*/bin/Debug/
-*/bin/Release/
+*/**/bin/Debug/
+*/**/bin/Release/
 
 # OS Generated
 desktop.ini
@@ -33,3 +33,4 @@ Thumbs.db
 
 # Custom for Repo
 Visual-Studio-Code-Entire-Course/
+Exercises/Exercise 1/1 2 Visual Studio Exercise 1 Materials/Exercise1/Exercise1/bin/Debug/Exercise1.exe
