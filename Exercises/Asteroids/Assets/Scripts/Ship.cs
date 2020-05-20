@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.UI;
 using UnityEngine.UI;
 
 /// <summary>
@@ -100,27 +99,6 @@ public class Ship : MonoBehaviour
     /// </summary>
     private void OnBecameInvisible()
     {
-        /*
-        Vector3 currentPosition = gameObject.transform.position;
-
-        if (currentPosition.x < ScreenUtils.ScreenLeft)
-        {
-            currentPosition.x = ScreenUtils.ScreenRight - collCircleRadius;
-        } else if (currentPosition.x > ScreenUtils.ScreenRight)
-        {
-            currentPosition.x = ScreenUtils.ScreenLeft + collCircleRadius;
-        }
-        if (currentPosition.y < ScreenUtils.ScreenBottom)
-        {
-            currentPosition.y = ScreenUtils.ScreenTop - collCircleRadius;
-        }
-        else if (currentPosition.y > ScreenUtils.ScreenTop)
-        {
-            currentPosition.y = ScreenUtils.ScreenBottom + collCircleRadius;
-        }
-
-        gameObject.transform.position = currentPosition;
-        */
         ScreenWrapper.AdjustPosition(gameObject, collCircleRadius);
     }
 
