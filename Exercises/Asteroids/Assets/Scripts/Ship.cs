@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.UI;
+using UnityEngine.UI;
 
 /// <summary>
 /// This class handles the ships behaviour
@@ -21,12 +23,14 @@ public class Ship : MonoBehaviour
     private new Rigidbody2D rigidbody2D;
     SpriteRenderer spriteRenderer;
     Vector2 thrustDirection;
+    Text gameVitalsText;
 
     // Constants associated with movement
 
     const float ThrustForce = 2;
     const float RotateDegreesPerSecond = 90;
     float collCircleRadius;
+    const float maxSpeed = 10f;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +41,7 @@ public class Ship : MonoBehaviour
         rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
         collCircleRadius = gameObject.GetComponent<CircleCollider2D>().radius;
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        gameVitalsText = GameObject.Find("GameVitals").GetComponent<Text>();
     }
 
     private void FixedUpdate()
@@ -57,20 +62,33 @@ public class Ship : MonoBehaviour
 
         // Store direction the ship is now facing following rotation
 
-        float currentRotationRadians = Mathf.Deg2Rad * gameObject.transform.eulerAngles.z;
+        float currentRotationDegrees = gameObject.transform.eulerAngles.z;
+        float currentRotationRadians = Mathf.Deg2Rad * currentRotationDegrees;
         thrustDirection = new Vector2(Mathf.Cos(currentRotationRadians), Mathf.Sin(currentRotationRadians));
 
         // Handle ship thrusting
 
         if (Input.GetAxis("Thrust") > 0)
         {
-            rigidbody2D.AddForce(thrustDirection * ThrustForce, ForceMode2D.Force);
-            Vector3 currentPosition = gameObject.transform.position;
-            spriteRenderer.sprite = spriteShipThrust;
+            if (rigidbody2D.velocity.magnitude > maxSpeed)
+            {
+                rigidbody2D.velocity = rigidbody2D.velocity.normalized * maxSpeed; 
+            } else
+            {
+                rigidbody2D.AddForce(thrustDirection * ThrustForce, ForceMode2D.Force);
+                Vector3 currentPosition = gameObject.transform.position;
+                spriteRenderer.sprite = spriteShipThrust;
+            }
+
         } else
         {
             spriteRenderer.sprite = spriteShip;
         }
+
+        GameVitals.UpdateVitals(rigidbody2D.velocity.x,
+    rigidbody2D.velocity.y,
+    currentRotationDegrees);
+        gameVitalsText.text = GameVitals.VitalsString;
 
     }
 
@@ -85,18 +103,18 @@ public class Ship : MonoBehaviour
 
         if (currentPosition.x < ScreenUtils.ScreenLeft)
         {
-            currentPosition.x = ScreenUtils.ScreenRight + collCircleRadius;
+            currentPosition.x = ScreenUtils.ScreenRight - collCircleRadius;
         } else if (currentPosition.x > ScreenUtils.ScreenRight)
         {
-            currentPosition.x = ScreenUtils.ScreenLeft - collCircleRadius;
+            currentPosition.x = ScreenUtils.ScreenLeft + collCircleRadius;
         }
         if (currentPosition.y < ScreenUtils.ScreenBottom)
         {
-            currentPosition.y = ScreenUtils.ScreenTop + collCircleRadius;
+            currentPosition.y = ScreenUtils.ScreenTop - collCircleRadius;
         }
         else if (currentPosition.y > ScreenUtils.ScreenTop)
         {
-            currentPosition.y = ScreenUtils.ScreenBottom - collCircleRadius;
+            currentPosition.y = ScreenUtils.ScreenBottom + collCircleRadius;
         }
 
         gameObject.transform.position = currentPosition;
