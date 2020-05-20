@@ -85,9 +85,12 @@ public class Ship : MonoBehaviour
             spriteRenderer.sprite = spriteShip;
         }
 
+        // Set flag in GameVitals class if you want the ship vitals to be shown
+
         GameVitals.UpdateVitals(rigidbody2D.velocity.x,
     rigidbody2D.velocity.y,
-    currentRotationDegrees);
+    currentRotationDegrees,
+    rigidbody2D.angularVelocity);
         gameVitalsText.text = GameVitals.VitalsString;
 
     }
@@ -97,9 +100,8 @@ public class Ship : MonoBehaviour
     /// </summary>
     private void OnBecameInvisible()
     {
+        /*
         Vector3 currentPosition = gameObject.transform.position;
-        Vector2 currentDirection = rigidbody2D.velocity;
-        print(currentDirection);
 
         if (currentPosition.x < ScreenUtils.ScreenLeft)
         {
@@ -118,6 +120,8 @@ public class Ship : MonoBehaviour
         }
 
         gameObject.transform.position = currentPosition;
+        */
+        ScreenWrapper.AdjustPosition(gameObject, collCircleRadius);
     }
 
 }

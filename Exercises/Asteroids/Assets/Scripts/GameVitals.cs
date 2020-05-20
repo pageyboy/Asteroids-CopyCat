@@ -12,6 +12,7 @@ public static class GameVitals
     static float xVelocity;
     static float yVelocity;
     static int rotation;
+    static float angularVelocity;
     static string vitalsString = "";
 
     public static string VitalsString
@@ -23,16 +24,18 @@ public static class GameVitals
     }
 
     public static void UpdateVitals(float newXVelocity, float newYVelocity,
-        float newRotation)
+        float newRotation, float newAngularVelocity)
     {
         xVelocity = newXVelocity;
         yVelocity = newYVelocity;
         rotation = (int)newRotation;
+        angularVelocity = newAngularVelocity;
         if (show)
         {
             vitalsString = "x Velocity: " + xVelocity.ToString("0.00") +
                             "\ny Velocity: " + yVelocity.ToString("0.00") +
-                            "\nRotation: " + rotation;
+                            "\nDirection: " + rotation + "°" +
+                            "\nAngular Velocity: " + angularVelocity.ToString("0.0") + "°/s";
         }
 
     }
