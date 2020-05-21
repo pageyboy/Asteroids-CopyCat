@@ -26,7 +26,7 @@ public class Ship : MonoBehaviour
 
     // Constants associated with movement
 
-    const float ThrustForce = 2;
+    const float ThrustForce = 5;
     const float RotateDegreesPerSecond = 90;
     float collCircleRadius;
     const float maxSpeed = 10f;

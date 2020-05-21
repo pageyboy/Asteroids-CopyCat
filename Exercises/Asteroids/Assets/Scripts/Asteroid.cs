@@ -21,9 +21,9 @@ public class Asteroid : MonoBehaviour
         Vector2 newVector = new Vector2(Mathf.Cos(randomAngleRadians), Mathf.Sin(randomAngleRadians));
         float randomForce = Random.Range(9, maxAsteroidForce);
         rigidbody2D.AddForce(newVector * maxAsteroidForce, ForceMode2D.Force);
-        asteroidSprites[0] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidBlue");
-        asteroidSprites[1] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidBrown");
-        asteroidSprites[2] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidOrange");
+        asteroidSprites[0] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidGreen");
+        asteroidSprites[1] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidMagenta");
+        asteroidSprites[2] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidWhite");
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         int randomSprite = Random.Range(0, 3);
         spriteRenderer.sprite = asteroidSprites[randomSprite];
