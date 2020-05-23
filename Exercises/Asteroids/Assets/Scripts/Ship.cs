@@ -102,6 +102,8 @@ public class Ship : MonoBehaviour
         ScreenWrapper.AdjustPosition(gameObject, collCircleRadius);
     }
 
+
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Destroy(gameObject);

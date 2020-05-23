@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public static class GameVitals
 {
-    static bool show = true;
+    static bool show = false;
     static float xVelocity;
     static float yVelocity;
     static int rotation;
