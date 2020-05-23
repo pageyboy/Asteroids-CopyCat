@@ -26,10 +26,10 @@ public class Ship : MonoBehaviour
 
     // Constants associated with movement
 
-    const float ThrustForce = 5;
-    const float RotateDegreesPerSecond = 90;
+    const float ThrustForce = 10;
+    const float RotateDegreesPerSecond = 360;
     float collCircleRadius;
-    const float maxSpeed = 10f;
+    const float maxSpeed = 20f;
 
     // Start is called before the first frame update
     void Start()
@@ -100,6 +100,11 @@ public class Ship : MonoBehaviour
     private void OnBecameInvisible()
     {
         ScreenWrapper.AdjustPosition(gameObject, collCircleRadius);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Destroy(gameObject);
     }
 
 }

@@ -8,21 +8,21 @@ static public class ScreenWrapper
     public static void AdjustPosition(GameObject gameObject, float collCircleRadius)
     {
         Vector3 currentPosition = gameObject.transform.position;
-        if (currentPosition.x < ScreenUtils.ScreenLeft)
+        if (currentPosition.x < ScreenUtils.Left)
         {
-            currentPosition.x = ScreenUtils.ScreenRight - collCircleRadius;
+            currentPosition.x = ScreenUtils.Right - collCircleRadius;
         }
-        else if (currentPosition.x > ScreenUtils.ScreenRight)
+        else if (currentPosition.x > ScreenUtils.Right)
         {
-            currentPosition.x = ScreenUtils.ScreenLeft + collCircleRadius;
+            currentPosition.x = ScreenUtils.Left + collCircleRadius;
         }
-        if (currentPosition.y < ScreenUtils.ScreenBottom)
+        if (currentPosition.y < ScreenUtils.Bottom)
         {
-            currentPosition.y = ScreenUtils.ScreenTop - collCircleRadius;
+            currentPosition.y = ScreenUtils.Top - collCircleRadius;
         }
-        else if (currentPosition.y > ScreenUtils.ScreenTop)
+        else if (currentPosition.y > ScreenUtils.Top)
         {
-            currentPosition.y = ScreenUtils.ScreenBottom + collCircleRadius;
+            currentPosition.y = ScreenUtils.Bottom + collCircleRadius;
         }
 
         gameObject.transform.position = currentPosition;

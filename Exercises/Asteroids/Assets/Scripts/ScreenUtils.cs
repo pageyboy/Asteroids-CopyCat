@@ -14,11 +14,11 @@ public static class ScreenUtils
     static int screenHeight;
 
     // cached for efficient boundary checking
-    static float screenLeft;
-    static float screenRight;
-    static float screenTop;
-    static float screenBottom;
-    static float screenRatio;
+    static float left;
+    static float right;
+    static float top;
+    static float bottom;
+    static float ratio;
 
     #endregion
 
@@ -27,12 +27,12 @@ public static class ScreenUtils
     /// <summary>
     /// Store the ratio of screen width to height
     /// </summary>
-    public static float ScreenRatio
+    public static float Ratio
     {
         get
         {
             CheckScreenSizeChanged();
-            return screenRatio;
+            return ratio;
         }
     }
 
@@ -40,12 +40,12 @@ public static class ScreenUtils
     /// Gets the left edge of the screen in world coordinates
     /// </summary>
     /// <value>left edge of the screen</value>
-    public static float ScreenLeft
+    public static float Left
     {
         get
         {
             CheckScreenSizeChanged();
-            return screenLeft;
+            return left;
         }
     }
 
@@ -53,12 +53,12 @@ public static class ScreenUtils
     /// Gets the right edge of the screen in world coordinates
     /// </summary>
     /// <value>right edge of the screen</value>
-    public static float ScreenRight
+    public static float Right
     {
         get
         {
             CheckScreenSizeChanged();
-            return screenRight;
+            return right;
         }
     }
 
@@ -66,12 +66,12 @@ public static class ScreenUtils
     /// Gets the top edge of the screen in world coordinates
     /// </summary>
     /// <value>top edge of the screen</value>
-    public static float ScreenTop
+    public static float Top
     {
         get
         {
             CheckScreenSizeChanged();
-            return screenTop;
+            return top;
         }
     }
 
@@ -79,12 +79,12 @@ public static class ScreenUtils
     /// Gets the bottom edge of the screen in world coordinates
     /// </summary>
     /// <value>bottom edge of the screen</value>
-    public static float ScreenBottom
+    public static float Bottom
     {
         get 
         {
             CheckScreenSizeChanged();
-            return screenBottom; 
+            return bottom; 
         }
     }
 
@@ -110,18 +110,18 @@ public static class ScreenUtils
             Camera.main.ScreenToWorldPoint(lowerLeftCornerScreen);
         Vector3 upperRightCornerWorld =
             Camera.main.ScreenToWorldPoint(upperRightCornerScreen);
-        screenLeft = lowerLeftCornerWorld.x;
-        screenRight = upperRightCornerWorld.x;
-        screenTop = upperRightCornerWorld.y;
-        screenBottom = lowerLeftCornerWorld.y;
+        left = lowerLeftCornerWorld.x;
+        right = upperRightCornerWorld.x;
+        top = upperRightCornerWorld.y;
+        bottom = lowerLeftCornerWorld.y;
         CalculateScreenRatio();
     }
 
     static void CalculateScreenRatio()
     {
-        float screenWidth = screenRight - screenLeft;
-        float screenHeight = screenTop - ScreenBottom;
-        screenRatio = screenWidth / screenHeight;
+        float screenWidth = right - left;
+        float screenHeight = top - Bottom;
+        ratio = screenWidth / screenHeight;
     }
 
     /// <summary>
