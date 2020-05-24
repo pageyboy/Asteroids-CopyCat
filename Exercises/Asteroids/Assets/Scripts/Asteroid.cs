@@ -12,25 +12,6 @@ public class Asteroid : MonoBehaviour
     float collCircleRadius;
     const float maxAsteroidForce = 100;
 
-    // Start is called before the first frame update
-    /*void Start()
-    {
-        rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
-        collCircleRadius = gameObject.GetComponent<CircleCollider2D>().radius;
-        asteroidSprites[0] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidGreen");
-        asteroidSprites[1] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidMagenta");
-        asteroidSprites[2] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidWhite");
-        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        int randomSprite = Random.Range(0, 3);
-        spriteRenderer.sprite = asteroidSprites[randomSprite];
-    }*/
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnBecameInvisible()
     {
         ScreenWrapper.AdjustPosition(gameObject, collCircleRadius);
