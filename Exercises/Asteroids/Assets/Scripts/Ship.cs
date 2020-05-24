@@ -29,7 +29,7 @@ public class Ship : MonoBehaviour
     const float ThrustForce = 10;
     const float RotateDegreesPerSecond = 360;
     float collCircleRadius;
-    const float maxSpeed = 20f;
+    const float maxSpeed = 5f;
 
     // Start is called before the first frame update
     void Start()
