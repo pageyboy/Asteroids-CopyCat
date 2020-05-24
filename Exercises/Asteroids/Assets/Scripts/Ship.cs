@@ -16,6 +16,8 @@ public class Ship : MonoBehaviour
     Sprite spriteShip;
     [SerializeField]
     Sprite spriteShipThrust;
+    [SerializeField]
+    GameObject prefabBullet;
 
     // Fields to reduce clutter
 
@@ -23,6 +25,9 @@ public class Ship : MonoBehaviour
     SpriteRenderer spriteRenderer;
     Vector2 thrustDirection;
     Text gameVitalsText;
+
+    const int bulletsPerSecond = 5;
+    Timer bulletTimer;
 
     // Constants associated with movement
 
@@ -41,6 +46,11 @@ public class Ship : MonoBehaviour
         collCircleRadius = gameObject.GetComponent<CircleCollider2D>().radius;
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         gameVitalsText = GameObject.Find("GameVitals").GetComponent<Text>();
+
+        bulletTimer = gameObject.AddComponent<Timer>();
+        bulletTimer.Duration = 1f / bulletsPerSecond;
+        bulletTimer.Run();
+
     }
 
     private void FixedUpdate()
@@ -82,6 +92,18 @@ public class Ship : MonoBehaviour
         } else
         {
             spriteRenderer.sprite = spriteShip;
+        }
+
+        if (Input.GetAxis("Fire1") > 0)
+        {
+            if (bulletTimer.Finished)
+            {
+                Vector3 firstBulletLocation = gameObject.transform.position;
+                Quaternion shipRotation = gameObject.transform.rotation;
+                GameObject firstBullet = Instantiate<GameObject>(prefabBullet, firstBulletLocation, shipRotation);
+                firstBullet.tag = "Bullet";
+                bulletTimer.Run();
+            }
         }
 
         // Set flag in GameVitals class if you want the ship vitals to be shown

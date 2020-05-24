@@ -388,10 +388,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1332622320}
   - component: {fileID: 1332622322}
-  - component: {fileID: 1332622321}
   - component: {fileID: 1332622323}
   - component: {fileID: 1332622324}
-  m_Layer: 0
+  - component: {fileID: 1332622321}
+  m_Layer: 9
   m_Name: SpaceShipRotated
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -426,6 +426,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteShip: {fileID: 21300000, guid: ea633e759995c1a4cb3cc36ed7c642b3, type: 3}
   spriteShipThrust: {fileID: 21300000, guid: 84ba23c812bc87c4daf838a525e9ac7b, type: 3}
+  prefabBullet: {fileID: 6608706867889106963, guid: 9086ff4698d135a498290d050f2170eb,
+    type: 3}
 --- !u!212 &1332622322
 SpriteRenderer:
   m_ObjectHideFlags: 0

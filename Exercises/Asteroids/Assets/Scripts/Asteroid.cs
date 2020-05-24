@@ -27,6 +27,7 @@ public class Asteroid : MonoBehaviour
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         int randomSprite = Random.Range(0, 3);
         spriteRenderer.sprite = asteroidSprites[randomSprite];
+        gameObject.tag = "Asteroid";
 
         float randomAngleRadians;
         float min = 0;
@@ -66,6 +67,14 @@ public class Asteroid : MonoBehaviour
         float randomForce = Random.Range(9, maxAsteroidForce);
         rigidbody2D.AddForce(newVector * maxAsteroidForce, ForceMode2D.Force);
         gameObject.transform.position = new Vector3(xStart, yStart, zStart);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Bullet")
+        {
+            Destroy(gameObject);
+        }
     }
 
 }
