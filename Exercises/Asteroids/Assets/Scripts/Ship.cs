@@ -98,10 +98,22 @@ public class Ship : MonoBehaviour
         {
             if (bulletTimer.Finished)
             {
-                Vector3 firstBulletLocation = gameObject.transform.position;
                 Quaternion shipRotation = gameObject.transform.rotation;
-                GameObject firstBullet = Instantiate<GameObject>(prefabBullet, firstBulletLocation, shipRotation);
+                float degreeOffset = -15;
+                float radiansOffset = degreeOffset * Mathf.Deg2Rad;
+                float distanceFromShip = 1f;
+                Vector2 firstBulletOffset = gameObject.transform.position + new Vector3(Mathf.Cos(radiansOffset + shipRotation.z) * distanceFromShip,
+                    Mathf.Sin(radiansOffset + shipRotation.z) * distanceFromShip,
+                    -Camera.main.transform.position.z);
+                
+                // Spawn first bullet
+                GameObject firstBullet = Instantiate<GameObject>(prefabBullet, gameObject.transform.position, shipRotation);
                 firstBullet.tag = "Bullet";
+
+                // Spawn second bullet
+                Vector3 secondBulletLocation = gameObject.transform.position;
+                
+                
                 bulletTimer.Run();
             }
         }
