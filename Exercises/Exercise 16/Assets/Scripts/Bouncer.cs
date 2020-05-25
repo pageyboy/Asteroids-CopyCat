@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Bouncer : MonoBehaviour
 {
-
     HUD hud;
 
     #region Fields
@@ -29,18 +28,13 @@ public class Bouncer : MonoBehaviour
         hud.UpdateScore(health);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         health -= healthLoss;
         spriteColor.a -= colorLoss;
         sprite.color = spriteColor;
         hud.UpdateScore(health);
+        AudioManager.Play(AudioClipName.Ow);
         print(spriteColor.a);
         if (health <= 0)
         {
