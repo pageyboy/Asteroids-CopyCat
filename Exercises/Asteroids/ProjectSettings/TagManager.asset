@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Asteroid
   - Bullet
+  - AsteroidGreen
+  - AsteroidMagenta
+  - AsteroidWhite
+  - AsteroidHalf
   layers:
   - Default
   - TransparentFX

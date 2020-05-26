@@ -18,6 +18,7 @@ public class AsteroidSpawner : MonoBehaviour
 
         if (spawnAsteroids)
         {
+
             GameObject asteroid = Instantiate<GameObject>(prefabAsteroid);
             asteroid.SendMessage("Initialize", Direction.Left);
             asteroid.name = "Left";
@@ -33,7 +34,7 @@ public class AsteroidSpawner : MonoBehaviour
             asteroid = Instantiate<GameObject>(prefabAsteroid);
             asteroid.SendMessage("Initialize", Direction.Down);
             asteroid.name = "Down";
-            
+
         }
     }
 }

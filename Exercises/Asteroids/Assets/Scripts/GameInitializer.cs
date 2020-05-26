@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public class GameInitializer : MonoBehaviour 
 {
+
     /// <summary>
     /// Awake is called before Start
     /// </summary>

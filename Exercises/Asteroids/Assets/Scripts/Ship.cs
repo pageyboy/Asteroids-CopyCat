@@ -79,6 +79,7 @@ public class Ship : MonoBehaviour
 
         if (Input.GetAxis("Thrust") > 0)
         {
+            AudioManager.Play(AudioClipName.RocketBoost);
             if (rigidbody2D.velocity.magnitude > maxSpeed)
             {
                 rigidbody2D.velocity = rigidbody2D.velocity.normalized * maxSpeed; 
@@ -109,6 +110,7 @@ public class Ship : MonoBehaviour
                 // Spawn first bullet
                 GameObject firstBullet = Instantiate<GameObject>(prefabBullet, gameObject.transform.position, shipRotation);
                 firstBullet.tag = "Bullet";
+                AudioManager.Play(AudioClipName.LaserGun);
 
                 // Spawn second bullet
                 Vector3 secondBulletLocation = gameObject.transform.position;
