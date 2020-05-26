@@ -4,5 +4,7 @@
 public enum AudioClipName
 {
     LaserGun,
-    RocketBoost
+    GameOver,
+    AsteroidDeath,
+    LevelUp
 }

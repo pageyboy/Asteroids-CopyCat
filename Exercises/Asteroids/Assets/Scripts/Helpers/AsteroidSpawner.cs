@@ -8,12 +8,8 @@ public class AsteroidSpawner : MonoBehaviour
     [SerializeField]
     GameObject prefabAsteroid;
 
-    const float coll = 0.32f;
-
-    // Start is called before the first frame update
-    void Start()
+    public void SpawnAsteroids()
     {
-
         bool spawnAsteroids = true;
 
         if (spawnAsteroids)
@@ -26,7 +22,7 @@ public class AsteroidSpawner : MonoBehaviour
             asteroid = Instantiate<GameObject>(prefabAsteroid);
             asteroid.SendMessage("Initialize", Direction.Right);
             asteroid.name = "Right";
-            
+
             asteroid = Instantiate<GameObject>(prefabAsteroid);
             asteroid.SendMessage("Initialize", Direction.Up);
             asteroid.name = "Up";
@@ -34,7 +30,7 @@ public class AsteroidSpawner : MonoBehaviour
             asteroid = Instantiate<GameObject>(prefabAsteroid);
             asteroid.SendMessage("Initialize", Direction.Down);
             asteroid.name = "Down";
-
         }
-    }
+        }
+
 }

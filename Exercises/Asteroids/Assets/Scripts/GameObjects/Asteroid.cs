@@ -1,44 +1,63 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Handles the Asteroid and AsteroidHalves
+/// </summary>
 public class Asteroid : MonoBehaviour
 {
+
+    // Store some sprite arrays
     Sprite[] asteroidSprites = new Sprite[3];
     Sprite[] asteroidHalves = new Sprite[6];
     GameObject prefabAsteroidHalf;
 
+    // Declare common components that require accessing
     private new Rigidbody2D rigidbody2D;
     SpriteRenderer spriteRenderer;
 
+    // Store some usual properties for the asteroids.
+    // CollCircleRadius is used when ScreenWrapping the Asteroid
     float collCircleRadius;
     const float maxAsteroidForce = 100;
+    const float minAsteroidForce = 10;
 
+    // Use the OnBecameInvisible Method to help screen wrap.
     private void OnBecameInvisible()
     {
         ScreenWrapper.AdjustPosition(gameObject, collCircleRadius);
     }
 
+    // The Asteroid Halves are not instantiated with any inbuilt directions unlike the Asteroids.
+    // The Asteroid Halves are spawned where the Asteroids are destroyed
+    // Therefore the Asteroid halves run the Start Method, whereas the Asteroid Halves used the Start method
     public void Start()
     {
+        // Check that this Asteroid instance is an Asteroid Half
         if (gameObject.tag == "AsteroidHalf")
         {
+            // Needs to be spun into a seperate method. Asteroid Movement.
             rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
             collCircleRadius = gameObject.GetComponent<CircleCollider2D>().radius;
-            float randomAngleRadians = Random.Range(0, Mathf.PI * 2);
-            Vector2 newVector = new Vector2(Mathf.Cos(randomAngleRadians), Mathf.Sin(randomAngleRadians));
-            float randomForce = Random.Range(9, maxAsteroidForce);
-            rigidbody2D.AddForce(newVector * maxAsteroidForce, ForceMode2D.Force);
+            AsteroidMovement(0, 2 * Mathf.PI, gameObject.transform.position, GameManager.AsteroidMagnitudeModifier);
         }
 
     }
 
+    /// <summary>
+    /// Initialize method is used for whole asteroids when being spawned from the screen sides (top, bottom, left, right)
+    /// </summary>
+    /// <param name="direction"></param>
     public void Initialize(Direction direction)
     {
+        // Assign components
         rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
         collCircleRadius = gameObject.GetComponent<CircleCollider2D>().radius;
+        //  Check that this Asteroid is not an Asteroid Half
         if (gameObject.tag != "AsteroidHalf")
         {
+            // Load the Asteroid Sprite resources. Randomise and assign a random sprite and it's correct tag
+            // to the Asteroid being created
             asteroidSprites[0] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidGreen");
             asteroidSprites[1] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidMagenta");
             asteroidSprites[2] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidWhite");
@@ -47,6 +66,9 @@ public class Asteroid : MonoBehaviour
             int randomSprite = Random.Range(0, 3);
             spriteRenderer.sprite = asteroidSprites[randomSprite];
             gameObject.tag = tags[randomSprite];
+
+            // As this asteroid will spawn Asteroid halves once destroyed, these resources can also be loaded now.
+            // These will not be used until this Asteroid is destroyed.
             prefabAsteroidHalf = Resources.Load<GameObject>(@"Prefabs\AsteroidHalf");
             asteroidHalves[0] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidGreen1Half");
             asteroidHalves[1] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidGreen2Half");
@@ -56,7 +78,8 @@ public class Asteroid : MonoBehaviour
             asteroidHalves[5] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidWhite2Half");
         }
 
-        float randomAngleRadians;
+
+        // Gets the Asteroid moving.
         float min = 0;
         float max = 0;
         float xStart = 0;
@@ -89,23 +112,44 @@ public class Asteroid : MonoBehaviour
                 max = 285 * Mathf.Deg2Rad;
                 break;
         }
-        randomAngleRadians = Random.Range(min, max); 
-        Vector2 newVector = new Vector2(Mathf.Cos(randomAngleRadians), Mathf.Sin(randomAngleRadians));
-        float randomForce = Random.Range(9, maxAsteroidForce);
-        rigidbody2D.AddForce(newVector * maxAsteroidForce, ForceMode2D.Force);
-        gameObject.transform.position = new Vector3(xStart, yStart, zStart);
+        min /= GameManager.AngleModifier;
+        max *= GameManager.AngleModifier;
+        Vector3 startLocation = new Vector3(xStart, yStart, zStart);
+        AsteroidMovement(min, max, startLocation, GameManager.AsteroidMagnitudeModifier);
     }
 
+    public void AsteroidMovement(float minAngle, float maxAngle, Vector3 startLocation, float modifier)
+    {
+        gameObject.transform.position = startLocation;
+        float randomAngleRadians = Random.Range(minAngle, maxAngle);
+        Vector2 newVector = new Vector2(Mathf.Cos(randomAngleRadians), Mathf.Sin(randomAngleRadians));
+        float randomForce = Random.Range(minAsteroidForce, maxAsteroidForce);
+        rigidbody2D.AddForce(newVector * maxAsteroidForce * modifier, ForceMode2D.Force);
+    }
+
+    /// <summary>
+    /// Handles the Collisions when they occur.
+    /// This Method will destroy the Asteroid when it collides with a bullet.
+    /// If this object is a full Asteroid of tag "Asteroid (Green/Magenta/White)" then it will spawn the relevantly
+    /// coloured sprite.
+    /// If this object is a Half asteroid then it will just be destroyed.
+    /// When all asteroids are destroyed then the game will move to the next level.
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // Check if the collision that has occured is with a Bullet. Could be a bullet or the ship
         if (collision.gameObject.tag == "Bullet")
         {
+            // Check if the tag has the word 'Half' in it. If it has then this is a whole asteroid and therefore should be split
             if (gameObject.tag.IndexOf("Half") == -1)
             {
+                // Instantiate the two halves
                 GameObject firstAsteroidHalf = Instantiate<GameObject>(prefabAsteroidHalf, gameObject.transform.position, Quaternion.identity);
                 firstAsteroidHalf.tag = "AsteroidHalf";
                 GameObject secondAsteroidHalf = Instantiate<GameObject>(prefabAsteroidHalf, gameObject.transform.position, Quaternion.identity);
                 secondAsteroidHalf.tag = "AsteroidHalf";
+                // Depending on the colour of the tag, choose the correct coloured sprites to use.
                 switch (gameObject.tag)
                 {
                     case "AsteroidGreen":
@@ -122,7 +166,32 @@ public class Asteroid : MonoBehaviour
                         break;
                 }
             }
+            if (gameObject.tag == "AsteroidHalf")
+            {
+                GameManager.HitHalfAsteroid();
+            } else
+            {
+                GameManager.HitAsteroid();
+            }
+            // All asteroids half or otherwise that collide with a bullet should be destroyed.
+            AudioManager.Play(AudioClipName.AsteroidDeath);
             Destroy(gameObject);
+            // Check if all targets are destroyed. If so, raise the level and spawn more Asteroids following a short break.
+            List<GameObject> allTargets = new List<GameObject>();
+            GameObject[] targets = GameObject.FindGameObjectsWithTag("AsteroidHalf");
+            allTargets.AddRange(targets);
+            targets = GameObject.FindGameObjectsWithTag("AsteroidGreen");
+            allTargets.AddRange(targets);
+            targets = GameObject.FindGameObjectsWithTag("AsteroidMagenta");
+            allTargets.AddRange(targets);
+            targets = GameObject.FindGameObjectsWithTag("AsteroidWhite");
+            allTargets.AddRange(targets);
+            // All Targets Dead
+            if (allTargets.Count == 1)
+            {
+                AudioManager.Play(AudioClipName.LevelUp);
+                GameManager.IncreaseLevel();
+            }
         }
     }
 

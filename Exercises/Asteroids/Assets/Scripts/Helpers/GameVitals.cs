@@ -23,8 +23,8 @@ public static class GameVitals
         }
     }
 
-    public static void UpdateVitals(float newXVelocity, float newYVelocity,
-        float newRotation, float newAngularVelocity)
+    public static void UpdateVitals(float newXVelocity = 0, float newYVelocity = 0,
+        float newRotation = 0, float newAngularVelocity = 0, int level = 0, int health = 0, int score = 0)
     {
         xVelocity = newXVelocity;
         yVelocity = newYVelocity;
@@ -32,10 +32,17 @@ public static class GameVitals
         angularVelocity = newAngularVelocity;
         if (show)
         {
+            /*
             vitalsString = "x Velocity: " + xVelocity.ToString("0.00") +
                             "\ny Velocity: " + yVelocity.ToString("0.00") +
                             "\nDirection: " + rotation + "°" +
                             "\nAngular Velocity: " + angularVelocity.ToString("0.0") + "°/s";
+            */
+
+            vitalsString = "Score: " + score +
+                           "\nHealth: " + health +
+                           "\nLevel: " + level;
+
         }
 
     }

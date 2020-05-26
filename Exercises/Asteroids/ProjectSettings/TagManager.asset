@@ -10,6 +10,7 @@ TagManager:
   - AsteroidMagenta
   - AsteroidWhite
   - AsteroidHalf
+  - ScoreText
   layers:
   - Default
   - TransparentFX

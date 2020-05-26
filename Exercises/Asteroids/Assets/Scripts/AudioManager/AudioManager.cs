@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager
+public static class AudioManager
 {
 
     #region Fields
@@ -27,7 +27,10 @@ public class AudioManager
         initialized = true;
         audioSource = source;
         audioClips.Add(AudioClipName.LaserGun, Resources.Load<AudioClip>(@"Audio\LaserGun"));
-        audioClips.Add(AudioClipName.RocketBoost, Resources.Load<AudioClip>(@"Audio\RocketBoost"));
+        audioClips.Add(AudioClipName.GameOver, Resources.Load<AudioClip>(@"Audio\GameOver"));
+        audioClips.Add(AudioClipName.AsteroidDeath, Resources.Load<AudioClip>(@"Audio\AsteroidDeath"));
+        audioClips.Add(AudioClipName.LevelUp, Resources.Load<AudioClip>(@"Audio\LevelUp"));
+        
     }
 
     public static void Play(AudioClipName name)

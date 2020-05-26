@@ -79,7 +79,6 @@ public class Ship : MonoBehaviour
 
         if (Input.GetAxis("Thrust") > 0)
         {
-            AudioManager.Play(AudioClipName.RocketBoost);
             if (rigidbody2D.velocity.magnitude > maxSpeed)
             {
                 rigidbody2D.velocity = rigidbody2D.velocity.normalized * maxSpeed; 
@@ -122,11 +121,11 @@ public class Ship : MonoBehaviour
 
         // Set flag in GameVitals class if you want the ship vitals to be shown
 
-        GameVitals.UpdateVitals(rigidbody2D.velocity.x,
+        /*GameVitals.UpdateVitals(rigidbody2D.velocity.x,
     rigidbody2D.velocity.y,
     currentRotationDegrees,
-    rigidbody2D.angularVelocity);
-        gameVitalsText.text = GameVitals.VitalsString;
+    rigidbody2D.angularVelocity);*/
+        //gameVitalsText.text = GameVitals.VitalsString;
 
     }
 
@@ -142,7 +141,13 @@ public class Ship : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(gameObject);
+        GameManager.DecreaseHealth();
+        rigidbody2D.angularVelocity = 0;
+        if (GameManager.Health == 0)
+        {
+            AudioManager.Play(AudioClipName.GameOver);
+            Destroy(gameObject);
+        }
     }
 
 }
