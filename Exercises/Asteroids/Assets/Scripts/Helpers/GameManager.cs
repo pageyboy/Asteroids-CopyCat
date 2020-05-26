@@ -79,7 +79,7 @@ public static class GameManager
         asteroidMagnitudeModifier = 1;
         halfAsteroidMagnitudeModifier = 1.25f;
         angleModifier = 1.1f;
-        health = 1;
+        health = 5;
         score = 0;
         GameVitals.UpdateVitals(score: score, health: health, level: level);
 
