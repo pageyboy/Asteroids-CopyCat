@@ -139,7 +139,7 @@ public class Asteroid : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // Check if the collision that has occured is with a Bullet. Could be a bullet or the ship
-        if (collision.gameObject.tag == "Bullet")
+        if (collision.gameObject.tag == "Bullet" || collision.gameObject.tag == "Ship")
         {
             // Check if the tag has the word 'Half' in it. If it has then this is a whole asteroid and therefore should be split
             if (gameObject.tag.IndexOf("Half") == -1)
@@ -166,13 +166,19 @@ public class Asteroid : MonoBehaviour
                         break;
                 }
             }
-            if (gameObject.tag == "AsteroidHalf")
+            // If the collision was with a bullet and not the ship then award points
+            if (collision.gameObject.tag == "Bullet")
             {
-                GameManager.HitHalfAsteroid();
-            } else
-            {
-                GameManager.HitAsteroid();
+                if (gameObject.tag == "AsteroidHalf")
+                {
+                    GameManager.HitHalfAsteroid();
+                }
+                else
+                {
+                    GameManager.HitAsteroid();
+                }
             }
+
             // All asteroids half or otherwise that collide with a bullet should be destroyed.
             AudioManager.Play(AudioClipName.AsteroidDeath);
             Destroy(gameObject);

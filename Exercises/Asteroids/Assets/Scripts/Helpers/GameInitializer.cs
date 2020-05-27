@@ -9,7 +9,6 @@ using UnityEngine.UI;
 /// </summary>
 public class GameInitializer : MonoBehaviour 
 {
-    Text gameVitals;
     AsteroidSpawner aSpawn;
     Timer gameTimer;
 
@@ -29,8 +28,6 @@ public class GameInitializer : MonoBehaviour
     private void Start()
     {
         aSpawn = gameObject.GetComponent<AsteroidSpawner>();
-        aSpawn.SpawnAsteroids();
-        gameVitals = GameObject.Find("GameVitals").GetComponent<Text>();
         gameTimer = gameObject.AddComponent<Timer>();
 
     }
@@ -42,8 +39,6 @@ public class GameInitializer : MonoBehaviour
             GameManager.SpawnFlag = false;
             aSpawn.SpawnAsteroids();
         }
-        gameVitals.text = GameVitals.VitalsString;
-
     }
 
 }

@@ -11,6 +11,7 @@ TagManager:
   - AsteroidWhite
   - AsteroidHalf
   - ScoreText
+  - Ship
   layers:
   - Default
   - TransparentFX

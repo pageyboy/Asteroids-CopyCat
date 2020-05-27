@@ -45,7 +45,6 @@ public class Ship : MonoBehaviour
         rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
         collCircleRadius = gameObject.GetComponent<CircleCollider2D>().radius;
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        gameVitalsText = GameObject.Find("GameVitals").GetComponent<Text>();
 
         bulletTimer = gameObject.AddComponent<Timer>();
         bulletTimer.Duration = 1f / bulletsPerSecond;
@@ -118,15 +117,6 @@ public class Ship : MonoBehaviour
                 bulletTimer.Run();
             }
         }
-
-        // Set flag in GameVitals class if you want the ship vitals to be shown
-
-        /*GameVitals.UpdateVitals(rigidbody2D.velocity.x,
-    rigidbody2D.velocity.y,
-    currentRotationDegrees,
-    rigidbody2D.angularVelocity);*/
-        //gameVitalsText.text = GameVitals.VitalsString;
-
     }
 
     /// <summary>

@@ -17,6 +17,7 @@ public static class GameManager
     static int health;
     static int score;
     static float angleModifier;
+    const int maxHealth = 10;
     #endregion
 
     #region Properties
@@ -67,6 +68,11 @@ public static class GameManager
         get { return score; }
     }
 
+    public static int MaxHealth
+    {
+        get { return maxHealth; }
+    }
+
     #endregion
 
     #region Methods
@@ -81,8 +87,8 @@ public static class GameManager
         angleModifier = 1.1f;
         health = 5;
         score = 0;
-        GameVitals.UpdateVitals(score: score, health: health, level: level);
-
+        spawnFlag = true;
+        spawnTime = DateTime.Now.AddSeconds(2);
     }
 
     public static void IncreaseLevel()
@@ -96,7 +102,6 @@ public static class GameManager
         spawnFlag = true;
         spawnTime = DateTime.Now.AddSeconds(2);
         IncreaseHealth();
-        GameVitals.UpdateVitals(score: score, health: health, level: level);
     }
 
     public static void IncreaseHealth()
@@ -105,7 +110,6 @@ public static class GameManager
         {
             health++;
         }
-        GameVitals.UpdateVitals(score: score, health: health, level: level);
     }
 
     public static void DecreaseHealth()
@@ -114,19 +118,16 @@ public static class GameManager
         {
             health--;
         }
-        GameVitals.UpdateVitals(score: score, health: health, level: level);
     }
 
     public static void HitAsteroid()
     {
         score += asteroidPoints;
-        GameVitals.UpdateVitals(score: score, health: health, level: level);
     }
 
     public static void HitHalfAsteroid()
     {
         score += halfAsteroidPoints;
-        GameVitals.UpdateVitals(score: score, health: health, level: level);
     }
 
     #endregion
