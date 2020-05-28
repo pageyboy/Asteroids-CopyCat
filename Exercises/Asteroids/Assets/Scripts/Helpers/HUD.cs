@@ -12,8 +12,8 @@ public class HUD : MonoBehaviour
     float healthUnits;
     const int startFontSize = 180;
     const int endFontSize = 20;
-    const int fontChangeTime = 2;
-    int fontChangeSpeed;
+    const float fontChangeTime = 1.5f;
+    float fontChangeSpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +23,6 @@ public class HUD : MonoBehaviour
         healthUnits = 1 / (float)GameManager.MaxHealth;
         fontChangeSpeed = (startFontSize - endFontSize) / fontChangeTime;
         level = GameObject.Find("LevelText").GetComponent<Text>();
-
     }
 
     // Update is called once per frame
@@ -35,16 +34,29 @@ public class HUD : MonoBehaviour
                         "\nLevel: " + GameManager.Level;
         }
         healthBar.value = GameManager.Health * healthUnits;
-        /*
-        if (GameManager.SpawnFlag)
+        
+        if (GameManager.SpawnFlag && GameManager.Health >= 1)
         {
-            level.text = GameManager.Level.ToString();
-            level.fontSize -= (int)(Time.deltaTime * fontChangeSpeed);
+            if (level.fontSize < endFontSize)
+            {
+                level.text = "";
+            } else
+            {
+                level.text = GameManager.Level.ToString();
+            }
+            float newFontSize = level.fontSize - (fontChangeSpeed * Time.deltaTime);
+            level.fontSize = (int)(newFontSize);
         } else
         {
             level.text = "";
-            level.fontSize = 180; 
+            level.fontSize = 180;
         }
-        */
+
+        if (GameManager.Health == 0)
+        {
+            level.fontSize = 130;
+            level.text = "Game Over";
+        }
+
     }
 }

@@ -43,7 +43,7 @@ public class Ship : MonoBehaviour
         Vector3 startPosition = new Vector3(0, 0, 10);
         gameObject.transform.position = startPosition;
         rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
-        collCircleRadius = gameObject.GetComponent<CircleCollider2D>().radius;
+        collCircleRadius = gameObject.GetComponent<CircleCollider2D>().radius * 2;
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 
         bulletTimer = gameObject.AddComponent<Timer>();
@@ -131,12 +131,27 @@ public class Ship : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        GameManager.DecreaseHealth();
         rigidbody2D.angularVelocity = 0;
-        if (GameManager.Health == 0)
-        {
-            AudioManager.Play(AudioClipName.GameOver);
-            Destroy(gameObject);
+            GameManager.DecreaseHealth();
+            if (GameManager.Health == 0)
+            {
+                List<GameObject> allTargets = new List<GameObject>();
+                GameObject[] targets = GameObject.FindGameObjectsWithTag("AsteroidHalf");
+                allTargets.AddRange(targets);
+                targets = GameObject.FindGameObjectsWithTag("AsteroidGreen");
+                allTargets.AddRange(targets);
+                targets = GameObject.FindGameObjectsWithTag("AsteroidMagenta");
+                allTargets.AddRange(targets);
+                targets = GameObject.FindGameObjectsWithTag("AsteroidWhite");
+                allTargets.AddRange(targets);
+                targets = GameObject.FindGameObjectsWithTag("Bullet");
+                allTargets.AddRange(targets);
+                foreach (GameObject gObject in allTargets)
+                {
+                    Destroy(gObject);
+                }
+                AudioManager.Play(AudioClipName.GameOver);
+                Destroy(gameObject);
         }
     }
 

@@ -29,7 +29,6 @@ public class GameInitializer : MonoBehaviour
     {
         aSpawn = gameObject.GetComponent<AsteroidSpawner>();
         gameTimer = gameObject.AddComponent<Timer>();
-
     }
 
     private void Update()

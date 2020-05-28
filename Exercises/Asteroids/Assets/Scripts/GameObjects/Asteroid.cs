@@ -11,6 +11,7 @@ public class Asteroid : MonoBehaviour
     Sprite[] asteroidSprites = new Sprite[3];
     Sprite[] asteroidHalves = new Sprite[6];
     GameObject prefabAsteroidHalf;
+    GameObject prefabLife;
 
     // Declare common components that require accessing
     private new Rigidbody2D rigidbody2D;
@@ -18,14 +19,14 @@ public class Asteroid : MonoBehaviour
 
     // Store some usual properties for the asteroids.
     // CollCircleRadius is used when ScreenWrapping the Asteroid
-    float collCircleRadius;
+    float collCircleDiameter;
     const float maxAsteroidForce = 100;
     const float minAsteroidForce = 10;
 
     // Use the OnBecameInvisible Method to help screen wrap.
     private void OnBecameInvisible()
     {
-        ScreenWrapper.AdjustPosition(gameObject, collCircleRadius);
+        ScreenWrapper.AdjustPosition(gameObject, collCircleDiameter);
     }
 
     // The Asteroid Halves are not instantiated with any inbuilt directions unlike the Asteroids.
@@ -38,8 +39,9 @@ public class Asteroid : MonoBehaviour
         {
             // Needs to be spun into a seperate method. Asteroid Movement.
             rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
-            collCircleRadius = gameObject.GetComponent<CircleCollider2D>().radius;
+            collCircleDiameter = gameObject.GetComponent<CircleCollider2D>().radius * 2;
             AsteroidMovement(0, 2 * Mathf.PI, gameObject.transform.position, GameManager.AsteroidMagnitudeModifier);
+            prefabLife = Resources.Load<GameObject>(@"Prefabs\Life");
         }
 
     }
@@ -52,7 +54,7 @@ public class Asteroid : MonoBehaviour
     {
         // Assign components
         rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
-        collCircleRadius = gameObject.GetComponent<CircleCollider2D>().radius;
+        collCircleDiameter = gameObject.GetComponent<CircleCollider2D>().radius;
         //  Check that this Asteroid is not an Asteroid Half
         if (gameObject.tag != "AsteroidHalf")
         {
@@ -76,6 +78,8 @@ public class Asteroid : MonoBehaviour
             asteroidHalves[3] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidMagenta2Half");
             asteroidHalves[4] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidWhite1Half");
             asteroidHalves[5] = Resources.Load<Sprite>(@"Sprites\Asteroids\AsteroidWhite2Half");
+
+            prefabLife = Resources.Load<GameObject>(@"Prefabs\Life");
         }
 
 
@@ -88,26 +92,26 @@ public class Asteroid : MonoBehaviour
         switch (direction)
         {
             case Direction.Left:
-                xStart = ScreenUtils.Right + collCircleRadius;
+                xStart = ScreenUtils.Right + collCircleDiameter;
                 yStart = 0;
                 min = 165 * Mathf.Deg2Rad;
                 max = 195 * Mathf.Deg2Rad;
                 break;
             case Direction.Right:
-                xStart = ScreenUtils.Left - collCircleRadius;
+                xStart = ScreenUtils.Left - collCircleDiameter;
                 yStart = 0;
                 min = -15 * Mathf.Deg2Rad;
                 max = 15 * Mathf.Deg2Rad;
                 break;
             case Direction.Up:
                 xStart = 0;
-                yStart = ScreenUtils.Bottom - collCircleRadius;
+                yStart = ScreenUtils.Bottom - collCircleDiameter;
                 min = 75 * Mathf.Deg2Rad;
                 max = 105 * Mathf.Deg2Rad;
                 break;
             case Direction.Down:
                 xStart = 0;
-                yStart = ScreenUtils.Top + collCircleRadius;
+                yStart = ScreenUtils.Top + collCircleDiameter;
                 min = 255 * Mathf.Deg2Rad;
                 max = 285 * Mathf.Deg2Rad;
                 break;
@@ -177,6 +181,11 @@ public class Asteroid : MonoBehaviour
                 {
                     GameManager.HitAsteroid();
                 }
+                int lifeChance = Random.Range(0, 10);
+                if (lifeChance == 1)
+                {
+                    GameObject life = Instantiate<GameObject>(prefabLife, gameObject.transform.position, Quaternion.identity);
+                }
             }
 
             // All asteroids half or otherwise that collide with a bullet should be destroyed.
@@ -195,6 +204,14 @@ public class Asteroid : MonoBehaviour
             // All Targets Dead
             if (allTargets.Count == 1)
             {
+                GameObject[] allBullets = GameObject.FindGameObjectsWithTag("Bullet");
+                if (allBullets.Length > 0)
+                {
+                    foreach (GameObject bullet in allBullets)
+                    {
+                        Destroy(bullet);
+                    }
+                }
                 AudioManager.Play(AudioClipName.LevelUp);
                 GameManager.IncreaseLevel();
             }
