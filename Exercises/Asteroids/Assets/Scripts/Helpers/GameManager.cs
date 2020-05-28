@@ -18,6 +18,7 @@ public static class GameManager
     static int score;
     static float angleModifier;
     const int maxHealth = 10;
+    static DateTime nextDamage;
     #endregion
 
     #region Properties
@@ -94,13 +95,14 @@ public static class GameManager
     public static void IncreaseLevel()
     {
         level++;
-        asteroidPoints *= 2;
-        halfAsteroidPoints *= 2;
-        asteroidMagnitudeModifier *= 1.2f;
-        halfAsteroidMagnitudeModifier *= 1.2f;
-        angleModifier *= 1.05f;
+        if (level < 10)
+        {
+            asteroidMagnitudeModifier *= 1.2f;
+            halfAsteroidMagnitudeModifier *= 1.2f;
+        }
+        angleModifier *= 1.01f;
         spawnFlag = true;
-        spawnTime = DateTime.Now.AddSeconds(2);
+        spawnTime = DateTime.Now.AddMilliseconds(500);
         IncreaseHealth();
     }
 
@@ -116,7 +118,11 @@ public static class GameManager
     {
         if (health > 0)
         {
-            health--;
+            if (DateTime.Now > nextDamage)
+            {
+                health--;
+                nextDamage = DateTime.Now.AddSeconds(1);
+            }
         }
     }
 
