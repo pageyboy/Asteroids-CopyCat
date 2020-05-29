@@ -5,12 +5,19 @@ using UnityEngine;
 public class Life : MonoBehaviour
 {
     Timer lifeTimer;
+    Color lifeColor;
+    SpriteRenderer spriteRenderer;
+    int lifeTime = 10;
+    float lifeAlphaStep;
 
     private void Start()
     {
         lifeTimer = gameObject.AddComponent<Timer>();
-        lifeTimer.Duration = 5;
+        lifeTimer.Duration = lifeTime;
         lifeTimer.Run();
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        lifeColor = spriteRenderer.color;
+        lifeAlphaStep = 1 / (float)lifeTime;
     }
 
     private void Update()
@@ -19,6 +26,9 @@ public class Life : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        lifeColor.a -= Time.deltaTime * lifeAlphaStep;
+        spriteRenderer.color = lifeColor;
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

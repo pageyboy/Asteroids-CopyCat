@@ -40,4 +40,32 @@ public class GameInitializer : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        // Check if all targets are destroyed. If so, raise the level.
+        List<GameObject> allTargets = new List<GameObject>();
+        GameObject[] targets = GameObject.FindGameObjectsWithTag("AsteroidHalf");
+        allTargets.AddRange(targets);
+        targets = GameObject.FindGameObjectsWithTag("AsteroidGreen");
+        allTargets.AddRange(targets);
+        targets = GameObject.FindGameObjectsWithTag("AsteroidMagenta");
+        allTargets.AddRange(targets);
+        targets = GameObject.FindGameObjectsWithTag("AsteroidWhite");
+        allTargets.AddRange(targets);
+        // All Targets Dead
+        if (allTargets.Count == 0 && !GameManager.SpawnFlag && !GameManager.GameOver)
+        {
+            GameObject[] allBullets = GameObject.FindGameObjectsWithTag("Bullet");
+            if (allBullets.Length > 0)
+            {
+                foreach (GameObject bullet in allBullets)
+                {
+                    Destroy(bullet);
+                }
+            }
+            AudioManager.Play(AudioClipName.LevelUp);
+            GameManager.IncreaseLevel();
+        }
+    }
+
 }

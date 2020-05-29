@@ -19,6 +19,7 @@ public static class GameManager
     static float angleModifier;
     const int maxHealth = 10;
     static DateTime nextDamage;
+    static bool gameOver = false;
     #endregion
 
     #region Properties
@@ -27,6 +28,10 @@ public static class GameManager
         get { return initialized; }
     }
 
+    public static bool GameOver
+    {
+        get { return gameOver; }
+    }
 
     public static int Level
     {
@@ -90,6 +95,7 @@ public static class GameManager
         score = 0;
         spawnFlag = true;
         spawnTime = DateTime.Now.AddSeconds(2);
+        
     }
 
     public static void IncreaseLevel()
@@ -102,7 +108,7 @@ public static class GameManager
         }
         angleModifier *= 1.01f;
         spawnFlag = true;
-        spawnTime = DateTime.Now.AddMilliseconds(500);
+        spawnTime = DateTime.Now.AddSeconds(2);
         IncreaseHealth();
     }
 
@@ -121,8 +127,12 @@ public static class GameManager
             if (DateTime.Now > nextDamage)
             {
                 health--;
-                nextDamage = DateTime.Now.AddSeconds(1);
+                nextDamage = DateTime.Now.AddMilliseconds(500);
             }
+        }
+        if (health == 0)
+        {
+            gameOver = true;
         }
     }
 

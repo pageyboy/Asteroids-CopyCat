@@ -142,8 +142,8 @@ public class Asteroid : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Check if the collision that has occured is with a Bullet. Could be a bullet or the ship
-        if (collision.gameObject.tag == "Bullet" || collision.gameObject.tag == "Ship")
+        // Check if the collision that has occured is with a Bullet.
+        if (collision.gameObject.tag == "Bullet")
         {
             // Check if the tag has the word 'Half' in it. If it has then this is a whole asteroid and therefore should be split
             if (gameObject.tag.IndexOf("Half") == -1)
@@ -170,9 +170,6 @@ public class Asteroid : MonoBehaviour
                         break;
                 }
             }
-            // If the collision was with a bullet and not the ship then award points
-            if (collision.gameObject.tag == "Bullet")
-            {
                 if (gameObject.tag == "AsteroidHalf")
                 {
                     GameManager.HitHalfAsteroid();
@@ -181,40 +178,14 @@ public class Asteroid : MonoBehaviour
                 {
                     GameManager.HitAsteroid();
                 }
-                int lifeChance = Random.Range(0, 10);
+                int lifeChance = Random.Range(0, 60);
                 if (lifeChance == 1)
                 {
                     GameObject life = Instantiate<GameObject>(prefabLife, gameObject.transform.position, Quaternion.identity);
                 }
-            }
+                Destroy(gameObject);
+                AudioManager.Play(AudioClipName.AsteroidDeath);
 
-            // All asteroids half or otherwise that collide with a bullet should be destroyed.
-            AudioManager.Play(AudioClipName.AsteroidDeath);
-            Destroy(gameObject);
-            // Check if all targets are destroyed. If so, raise the level and spawn more Asteroids following a short break.
-            List<GameObject> allTargets = new List<GameObject>();
-            GameObject[] targets = GameObject.FindGameObjectsWithTag("AsteroidHalf");
-            allTargets.AddRange(targets);
-            targets = GameObject.FindGameObjectsWithTag("AsteroidGreen");
-            allTargets.AddRange(targets);
-            targets = GameObject.FindGameObjectsWithTag("AsteroidMagenta");
-            allTargets.AddRange(targets);
-            targets = GameObject.FindGameObjectsWithTag("AsteroidWhite");
-            allTargets.AddRange(targets);
-            // All Targets Dead
-            if (allTargets.Count == 1)
-            {
-                GameObject[] allBullets = GameObject.FindGameObjectsWithTag("Bullet");
-                if (allBullets.Length > 0)
-                {
-                    foreach (GameObject bullet in allBullets)
-                    {
-                        Destroy(bullet);
-                    }
-                }
-                AudioManager.Play(AudioClipName.LevelUp);
-                GameManager.IncreaseLevel();
-            }
         }
     }
 
