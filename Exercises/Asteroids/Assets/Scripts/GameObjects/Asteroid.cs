@@ -178,7 +178,7 @@ public class Asteroid : MonoBehaviour
                 {
                     GameManager.HitAsteroid();
                 }
-                int lifeChance = Random.Range(0, 60);
+                int lifeChance = Random.Range(0, GameManager.HealthRandom);
                 if (lifeChance == 1)
                 {
                     GameObject life = Instantiate<GameObject>(prefabLife, gameObject.transform.position, Quaternion.identity);

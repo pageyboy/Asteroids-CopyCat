@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public static class GameManager
@@ -17,10 +18,12 @@ public static class GameManager
     static int health;
     static int score;
     static float angleModifier;
-    const int maxHealth = 10;
+    static int maxHealth;
     static DateTime nextDamage;
     static bool gameOver = false;
-    static GameDifficulty gameDifficulty = GameDifficulty.Easy;
+    static int healthRandom;
+    static float asteroidMagnitudeModifierIncrease;
+    static float angleModifierIncrease;
     #endregion
 
     #region Properties
@@ -80,23 +83,19 @@ public static class GameManager
         get { return maxHealth; }
     }
 
+    public static int HealthRandom
+    {
+        get { return healthRandom; }
+    }
     #endregion
 
     #region Methods
     public static void Initialize(GameDifficulty gameDifficulty)
     {
         initialized = true;
-        level = 1;
+        ChangeDifficulty(gameDifficulty);
         asteroidPoints = 10;
-        halfAsteroidPoints = 20;
-        asteroidMagnitudeModifier = 1;
-        halfAsteroidMagnitudeModifier = 1.25f;
-        angleModifier = 1.1f;
-        health = 5;
-        score = 0;
-        spawnFlag = true;
-        spawnTime = DateTime.Now.AddSeconds(2);
-        
+        halfAsteroidPoints = 20;       
     }
 
     public static void IncreaseLevel()
@@ -104,10 +103,10 @@ public static class GameManager
         level++;
         if (level < 10)
         {
-            asteroidMagnitudeModifier *= 1.2f;
-            halfAsteroidMagnitudeModifier *= 1.2f;
+            asteroidMagnitudeModifier *= asteroidMagnitudeModifierIncrease;
+            halfAsteroidMagnitudeModifier *= asteroidMagnitudeModifierIncrease;
         }
-        angleModifier *= 1.01f;
+        angleModifier *= angleModifierIncrease;
         spawnFlag = true;
         spawnTime = DateTime.Now.AddSeconds(2);
         IncreaseHealth();
@@ -115,7 +114,7 @@ public static class GameManager
 
     public static void IncreaseHealth()
     {
-        if (health < 10)
+        if (health < maxHealth)
         {
             health++;
         }
@@ -145,6 +144,43 @@ public static class GameManager
     public static void HitHalfAsteroid()
     {
         score += halfAsteroidPoints;
+    }
+
+    public static void ChangeDifficulty(GameDifficulty gameDifficulty)
+    {
+        level = 1;
+        score = 0;
+        asteroidMagnitudeModifier = 1;
+        halfAsteroidMagnitudeModifier = 1.25f;
+        angleModifier = 1.1f;
+        spawnFlag = true;
+        spawnTime = DateTime.Now.AddSeconds(2);
+        switch (gameDifficulty)
+        {
+            case GameDifficulty.Easy:
+                healthRandom = 10;
+                maxHealth = 10;
+                health = 5;
+                asteroidMagnitudeModifierIncrease = 1.2f;
+                angleModifierIncrease = 1.01f;
+                break;
+            case GameDifficulty.Medium:
+                healthRandom = 30;
+                maxHealth = 7;
+                health = 4;
+                asteroidMagnitudeModifierIncrease = 1.25f;
+                angleModifierIncrease = 1.03f;
+                break;
+            case GameDifficulty.Hard:
+                healthRandom = 60;
+                maxHealth = 5;
+                health = 3;
+                asteroidMagnitudeModifierIncrease = 1.3f;
+                angleModifierIncrease = 1.10f;
+                break;
+            default:
+                break;
+        }
     }
 
     #endregion

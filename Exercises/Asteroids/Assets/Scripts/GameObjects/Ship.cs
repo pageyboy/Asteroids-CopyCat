@@ -135,7 +135,7 @@ public class Ship : MonoBehaviour
             GameManager.DecreaseHealth();
             if (GameManager.Health == 0)
             {
-                List<GameObject> allTargets = new List<GameObject>();
+                      List<GameObject> allTargets = new List<GameObject>();
                 GameObject[] targets = GameObject.FindGameObjectsWithTag("AsteroidHalf");
                 allTargets.AddRange(targets);
                 targets = GameObject.FindGameObjectsWithTag("AsteroidGreen");
