@@ -25,6 +25,7 @@ public static class GameManager
     static float asteroidMagnitudeModifierIncrease;
     static float angleModifierIncrease;
     static GameDifficulty currentGameDifficulty;
+    static bool isGameStarted;
     #endregion
 
     #region Properties
@@ -93,6 +94,12 @@ public static class GameManager
     {
         get { return currentGameDifficulty; }
     }
+
+    public static bool IsGameStarted
+    {
+        get { return isGameStarted; }
+        set { isGameStarted = value; }
+    }
     #endregion
 
     #region Methods
@@ -153,6 +160,13 @@ public static class GameManager
         score += halfAsteroidPoints;
     }
 
+    public static void StartGame()
+    {
+        isGameStarted = true;
+        spawnFlag = true;
+        spawnTime = DateTime.Now.AddSeconds(2);
+    }
+
     public static void ChangeDifficulty(GameDifficulty gameDifficulty)
     {
         level = 1;
@@ -160,8 +174,7 @@ public static class GameManager
         asteroidMagnitudeModifier = 1;
         halfAsteroidMagnitudeModifier = 1.25f;
         angleModifier = 1.1f;
-        spawnFlag = true;
-        spawnTime = DateTime.Now.AddSeconds(2);
+        spawnFlag = false;
         currentGameDifficulty = gameDifficulty;
         switch (gameDifficulty)
         {

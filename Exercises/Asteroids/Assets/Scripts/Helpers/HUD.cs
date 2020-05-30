@@ -23,6 +23,7 @@ public class HUD : MonoBehaviour
     TMP_Text restartButtonText;
     bool gameOverFlag = false;
     bool restartAdded = false;
+    float timeGameStarted;
 
     float flashStep;
     const int flashLength = 1;
@@ -44,33 +45,56 @@ public class HUD : MonoBehaviour
         restartButtonColor.a = 0;
         restartButtonText.color = restartButtonColor;
         flashStep = 1 / (float)flashLength;
+        level.text = "Game Controls";
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(GameManager.Health >= 1) {
-            hud.text = Time.timeSinceLevelLoad.ToString("0.0") +
-                        "\nScore: " + GameManager.Score +
-                        "\nLevel: " + GameManager.Level;
-        }
-        healthBar.value = GameManager.Health * healthUnits;
-        
-        if (GameManager.SpawnFlag && GameManager.Health >= 1)
+        if (Input.GetAxis("Submit") > 0 && !GameManager.IsGameStarted)
         {
-            if (level.fontSize < endFontSize)
+            GameManager.StartGame();
+            timeGameStarted = Time.timeSinceLevelLoad;
+            level.fontSize = 180;
+        }
+
+        if (GameManager.IsGameStarted)
+        {
+            if (GameManager.Health >= 1)
+            {
+                hud.text = (Time.timeSinceLevelLoad - timeGameStarted).ToString("0.0") +
+                            "\nScore: " + GameManager.Score +
+                            "\nLevel: " + GameManager.Level;
+            }
+            healthBar.value = GameManager.Health * healthUnits;
+            if (GameManager.SpawnFlag && GameManager.Health >= 1)
+            {
+                if (level.fontSize < endFontSize)
+                {
+                    level.text = "";
+                }
+                else
+                {
+                    level.text = GameManager.Level.ToString();
+                }
+                float newFontSize = level.fontSize - (fontChangeSpeed * Time.deltaTime);
+                level.fontSize = (int)(newFontSize);
+            }
+            else
             {
                 level.text = "";
-            } else
-            {
-                level.text = GameManager.Level.ToString();
+                level.fontSize = 180;
             }
-            float newFontSize = level.fontSize - (fontChangeSpeed * Time.deltaTime);
-            level.fontSize = (int)(newFontSize);
         } else
         {
-            level.text = "";
-            level.fontSize = 180;
+            level.fontSize = 20;
+            level.text = "Controls\n\n" +
+                           "Spacebar: Thrust\n" +
+                           "Left Arrow: Rotate Anti-Clockwise\n" +
+                           "Right Arrow: Rotate Clockwise\n" +
+                           "Left Control: Shoot\n\n" +
+                           "Practice in this screen\n" + 
+                           "Hit ENTER when ready to play!";
         }
 
         if (GameManager.Health <= 0)
@@ -105,7 +129,7 @@ public class HUD : MonoBehaviour
     void Restart()
     {
         SceneManager.LoadScene(0);
-        //GameManager.
+        GameManager.IsGameStarted = false;
     }
 
     Color ButtonFlash(TMP_Text btnTMP)
@@ -141,7 +165,7 @@ public class HUD : MonoBehaviour
             }
         }
         btnTextColor.r = r;
-        btnTextColor.g = b;
+        btnTextColor.b = b;
         return btnTextColor;
     }
 
