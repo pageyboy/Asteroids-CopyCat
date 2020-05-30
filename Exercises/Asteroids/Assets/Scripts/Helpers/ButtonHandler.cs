@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System;
 
 public class ButtonHandler : MonoBehaviour
 {
@@ -29,6 +30,10 @@ public class ButtonHandler : MonoBehaviour
 
     GameDifficulty gameDifficulty;
 
+    DateTime nextHorizontalAllowed = DateTime.Now.AddSeconds(-2);
+
+    bool horizontalPositiveLast;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,7 +50,13 @@ public class ButtonHandler : MonoBehaviour
         tmpMedium = btnMedium.GetComponentInChildren<TMP_Text>(true);
         tmpHard = btnHard.GetComponentInChildren<TMP_Text>(true);
 
-        gameDifficulty = GameDifficulty.Hard;
+        if (GameManager.Initialized)
+        {
+            gameDifficulty = GameManager.GameDifficulty;
+        } else
+        {
+            gameDifficulty = GameDifficulty.Hard;
+        }
 
         flashStep = 1 / (float)flashLength;
 
@@ -92,6 +103,61 @@ public class ButtonHandler : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetAxis("Submit") > 0)
+        {
+            NewGame();
+        }
+        float inputValueHorizontal = Input.GetAxis("Horizontal");
+        if (inputValueHorizontal != 0 &&
+            (DateTime.Now > nextHorizontalAllowed || (inputValueHorizontal > 0 == !horizontalPositiveLast) || (inputValueHorizontal < 0 == horizontalPositiveLast)))
+        {
+            tmpEasy.color = new Color(1, 1, 1, 1);
+            tmpMedium.color = new Color(1, 1, 1, 1);
+            tmpHard.color = new Color(1, 1, 1, 1);
+            nextHorizontalAllowed = DateTime.Now.AddMilliseconds(500);
+            if (inputValueHorizontal > 0)
+            {
+                horizontalPositiveLast = true;
+                switch (gameDifficulty)
+                {
+                    case GameDifficulty.Easy:
+                        gameDifficulty = GameDifficulty.Medium;
+                        tmpMedium.color = new Color(0, 0, 1, 1);
+                        break;
+                    case GameDifficulty.Medium:
+                        gameDifficulty = GameDifficulty.Hard;
+                        tmpHard.color = new Color(0, 0, 1, 1);
+                        break;
+                    case GameDifficulty.Hard:
+                        gameDifficulty = GameDifficulty.Easy;
+                        tmpEasy.color = new Color(0, 0, 1, 1);
+                        break;
+                    default:
+                        break;
+                }
+            } else
+            {
+                horizontalPositiveLast = false;
+                switch (gameDifficulty)
+                {
+                    case GameDifficulty.Easy:
+                        gameDifficulty = GameDifficulty.Hard;
+                        tmpHard.color = new Color(0, 0, 1, 1);
+                        break;
+                    case GameDifficulty.Medium:
+                        gameDifficulty = GameDifficulty.Easy;
+                        tmpEasy.color = new Color(0, 0, 1, 1);
+                        break;
+                    case GameDifficulty.Hard:
+                        gameDifficulty = GameDifficulty.Medium;
+                        tmpMedium.color = new Color(0, 0, 1, 1);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
         switch (gameDifficulty)
         {
             case GameDifficulty.Easy:

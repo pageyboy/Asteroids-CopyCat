@@ -93,6 +93,10 @@ public class HUD : MonoBehaviour
                     btnRestart.onClick.AddListener(Restart);
                     restartAdded = true;
                 }
+                if (Input.GetAxis("Submit") > 0)
+                {
+                    Restart();
+                }
             }
         }
 

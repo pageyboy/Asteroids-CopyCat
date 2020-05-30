@@ -24,6 +24,7 @@ public static class GameManager
     static int healthRandom;
     static float asteroidMagnitudeModifierIncrease;
     static float angleModifierIncrease;
+    static GameDifficulty currentGameDifficulty;
     #endregion
 
     #region Properties
@@ -87,6 +88,11 @@ public static class GameManager
     {
         get { return healthRandom; }
     }
+
+    public static GameDifficulty GameDifficulty
+    {
+        get { return currentGameDifficulty; }
+    }
     #endregion
 
     #region Methods
@@ -95,7 +101,8 @@ public static class GameManager
         initialized = true;
         ChangeDifficulty(gameDifficulty);
         asteroidPoints = 10;
-        halfAsteroidPoints = 20;       
+        halfAsteroidPoints = 20;
+        currentGameDifficulty = gameDifficulty;
     }
 
     public static void IncreaseLevel()
@@ -155,6 +162,7 @@ public static class GameManager
         angleModifier = 1.1f;
         spawnFlag = true;
         spawnTime = DateTime.Now.AddSeconds(2);
+        currentGameDifficulty = gameDifficulty;
         switch (gameDifficulty)
         {
             case GameDifficulty.Easy:

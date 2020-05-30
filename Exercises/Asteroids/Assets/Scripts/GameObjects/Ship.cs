@@ -127,7 +127,15 @@ public class Ship : MonoBehaviour
         ScreenWrapper.AdjustPosition(gameObject, collCircleRadius);
     }
 
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        rigidbody2D.angularVelocity = 0;
+    }
 
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        rigidbody2D.angularVelocity = 0;
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
