@@ -20,6 +20,7 @@ public static class GameManager
     const int maxHealth = 10;
     static DateTime nextDamage;
     static bool gameOver = false;
+    static GameDifficulty gameDifficulty = GameDifficulty.Easy;
     #endregion
 
     #region Properties
@@ -82,7 +83,7 @@ public static class GameManager
     #endregion
 
     #region Methods
-    public static void Initialize()
+    public static void Initialize(GameDifficulty gameDifficulty)
     {
         initialized = true;
         level = 1;
@@ -147,4 +148,12 @@ public static class GameManager
     }
 
     #endregion
+
+}
+
+public enum GameDifficulty
+{
+    Easy,
+    Medium,
+    Hard
 }
