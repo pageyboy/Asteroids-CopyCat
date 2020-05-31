@@ -23,12 +23,6 @@ public class Asteroid : MonoBehaviour
     const float maxAsteroidForce = 100;
     const float minAsteroidForce = 10;
 
-    // Use the OnBecameInvisible Method to help screen wrap.
-    private void OnBecameInvisible()
-    {
-        ScreenWrapper.AdjustPosition(gameObject, collCircleDiameter);
-    }
-
     // The Asteroid Halves are not instantiated with any inbuilt directions unlike the Asteroids.
     // The Asteroid Halves are spawned where the Asteroids are destroyed
     // Therefore the Asteroid halves run the Start Method, whereas the Asteroid Halves used the Start method
@@ -163,7 +157,7 @@ public class Asteroid : MonoBehaviour
                 secondAsteroidHalf.tag = "AsteroidHalf";
                 // Depending on the colour of the tag, choose the correct coloured sprites to use.
                 switch (gameObject.tag)
-                {
+{
                     case "AsteroidGreen":
                         firstAsteroidHalf.GetComponent<SpriteRenderer>().sprite = asteroidHalves[0];
                         secondAsteroidHalf.GetComponent<SpriteRenderer>().sprite = asteroidHalves[1];
@@ -199,6 +193,17 @@ public class Asteroid : MonoBehaviour
                 Destroy(gameObject);
                 AudioManager.Play(AudioClipName.AsteroidDeath);
 
+        }
+    }
+
+    private void Update()
+    {
+        if (transform.position.x > ScreenUtils.Right ||
+            transform.position.x < ScreenUtils.Left ||
+            transform.position.y > ScreenUtils.Top ||
+            transform.position.y < ScreenUtils.Bottom)
+        {
+            ScreenWrapper.AdjustPosition(gameObject, collCircleDiameter);
         }
     }
 

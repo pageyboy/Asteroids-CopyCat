@@ -120,14 +120,6 @@ public class Ship : MonoBehaviour
     }
 
     /// <summary>
-    /// Use OnBecameInvisible method for screen wrapping
-    /// </summary>
-    private void OnBecameInvisible()
-    {
-        ScreenWrapper.AdjustPosition(gameObject, collCircleRadius);
-    }
-
-    /// <summary>
     /// Saw some weird behaviour with Angular velocity sometimes not being zeroed
     /// Added in the other collision events to ensure that no Angular velocity is applied on collision
     /// </summary>
@@ -173,6 +165,17 @@ public class Ship : MonoBehaviour
                 // Play game over sound and destroy ship
                 AudioManager.Play(AudioClipName.GameOver);
                 Destroy(gameObject);
+        }
+    }
+
+    private void Update()
+    {
+        if (transform.position.x > ScreenUtils.Right ||
+            transform.position.x < ScreenUtils.Left ||
+            transform.position.y > ScreenUtils.Top ||
+            transform.position.y < ScreenUtils.Bottom)
+        {
+            ScreenWrapper.AdjustPosition(gameObject, collCircleRadius);
         }
     }
 
