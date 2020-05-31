@@ -14,15 +14,21 @@ public class ButtonHandler : MonoBehaviour
     public Button prefabEasyRadio;
     public Button prefabMediumRadio;
     public Button prefabHardRadio;
+    public Button prefabAudioToggle;
+
+    public Sprite audioMute;
+    public Sprite audioOn;
 
     Button btnNewGame;
     Button btnEasy;
     Button btnMedium;
     Button btnHard;
+    Button btnAudio;
 
     TMP_Text tmpEasy;
     TMP_Text tmpMedium;
     TMP_Text tmpHard;
+    Image audioImage;
 
     float flashStep;
     const int flashLength = 1;
@@ -45,10 +51,22 @@ public class ButtonHandler : MonoBehaviour
         btnMedium.onClick.AddListener(SwitchDifficulty);
         btnHard = prefabHardRadio.GetComponent<Button>();
         btnHard.onClick.AddListener(SwitchDifficulty);
+        btnAudio = prefabAudioToggle.GetComponent<Button>();
+        btnAudio.onClick.AddListener(ToggleAudio);
 
         tmpEasy = btnEasy.GetComponentInChildren<TMP_Text>(true);
         tmpMedium = btnMedium.GetComponentInChildren<TMP_Text>(true);
         tmpHard = btnHard.GetComponentInChildren<TMP_Text>(true);
+
+        audioImage = btnAudio.GetComponent<Image>();
+
+        if (AudioManager.IsSound)
+        {
+            audioImage.sprite = audioOn;
+        } else
+        {
+            audioImage.sprite = audioMute;
+        }
 
         if (GameManager.Initialized)
         {
@@ -208,6 +226,24 @@ public class ButtonHandler : MonoBehaviour
         btnTextColor.r = r;
         btnTextColor.g = g;
         return btnTextColor;
+    }
+
+    void ToggleAudio()
+    {
+        if (Input.GetAxis("Submit") == 0)
+        {
+            if (AudioManager.IsSound)
+            {
+                AudioManager.ChangeAudioToMute(true);
+                audioImage.sprite = audioMute;
+            }
+            else
+            {
+                AudioManager.ChangeAudioToMute(false);
+                audioImage.sprite = audioOn;
+            }
+        }
+
     }
 
 }

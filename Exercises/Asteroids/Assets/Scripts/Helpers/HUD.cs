@@ -93,7 +93,7 @@ public class HUD : MonoBehaviour
                            "Left Arrow: Rotate Anti-Clockwise\n" +
                            "Right Arrow: Rotate Clockwise\n" +
                            "Left Control: Shoot\n\n" +
-                           "Practice in this screen\n" + 
+                           "Practice in this screen\n" +
                            "Hit ENTER when ready to play!";
         }
 
