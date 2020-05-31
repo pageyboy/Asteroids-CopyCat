@@ -116,12 +116,20 @@ public class Asteroid : MonoBehaviour
                 max = 285 * Mathf.Deg2Rad;
                 break;
         }
+        // Determine the min and maximums by using the GameManager modifiers
         min /= GameManager.AngleModifier;
         max *= GameManager.AngleModifier;
         Vector3 startLocation = new Vector3(xStart, yStart, zStart);
         AsteroidMovement(min, max, startLocation, GameManager.AsteroidMagnitudeModifier);
     }
 
+    /// <summary>
+    /// Creates the asteroid movements
+    /// </summary>
+    /// <param name="minAngle"></param>
+    /// <param name="maxAngle"></param>
+    /// <param name="startLocation"></param>
+    /// <param name="modifier"></param>
     public void AsteroidMovement(float minAngle, float maxAngle, Vector3 startLocation, float modifier)
     {
         gameObject.transform.position = startLocation;
@@ -170,6 +178,7 @@ public class Asteroid : MonoBehaviour
                         break;
                 }
             }
+                // Award points based on which asteroid was hit
                 if (gameObject.tag == "AsteroidHalf")
                 {
                     GameManager.HitHalfAsteroid();
@@ -178,11 +187,15 @@ public class Asteroid : MonoBehaviour
                 {
                     GameManager.HitAsteroid();
                 }
+
+                // Determine whether to initialize a life on the death of this Asteroid.
+                // Uses the GameManager.HealthRandom which is derived from the difficulty selected
                 int lifeChance = Random.Range(0, GameManager.HealthRandom);
                 if (lifeChance == 1)
                 {
                     GameObject life = Instantiate<GameObject>(prefabLife, gameObject.transform.position, Quaternion.identity);
                 }
+                // Destroy the Asteroid and play the AsteroidDeath clip
                 Destroy(gameObject);
                 AudioManager.Play(AudioClipName.AsteroidDeath);
 

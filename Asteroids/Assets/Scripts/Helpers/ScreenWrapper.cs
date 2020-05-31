@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Static class that provides the functionality along with the ScreenUtils class for wrapping objects that fall off
+/// of the world screen.
+/// </summary>
 static public class ScreenWrapper
 { 
     public static void AdjustPosition(GameObject gameObject, float collCircleRadius)

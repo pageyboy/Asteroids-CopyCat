@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
+/// <summary>
+/// Provides a game manager class.
+/// This handles everything related to the game
+/// </summary>
 public static class GameManager
 {
     #region Fields
@@ -103,6 +107,10 @@ public static class GameManager
     #endregion
 
     #region Methods
+    /// <summary>
+    /// Method to initialize the GameManager
+    /// </summary>
+    /// <param name="gameDifficulty"></param>
     public static void Initialize(GameDifficulty gameDifficulty)
     {
         initialized = true;
@@ -111,7 +119,9 @@ public static class GameManager
         halfAsteroidPoints = 20;
         currentGameDifficulty = gameDifficulty;
     }
-
+    /// <summary>
+    /// Increase the level
+    /// </summary>
     public static void IncreaseLevel()
     {
         level++;
@@ -125,7 +135,9 @@ public static class GameManager
         spawnTime = DateTime.Now.AddSeconds(2);
         IncreaseHealth();
     }
-
+    /// <summary>
+    /// Increase the ship's health
+    /// </summary>
     public static void IncreaseHealth()
     {
         if (health < maxHealth)
@@ -133,7 +145,9 @@ public static class GameManager
             health++;
         }
     }
-
+    /// <summary>
+    /// Decrease the ship's health
+    /// </summary>
     public static void DecreaseHealth()
     {
         if (health > 0)
@@ -149,24 +163,33 @@ public static class GameManager
             gameOver = true;
         }
     }
-
+    /// <summary>
+    /// Register hitting an Asteroid and score appropriately
+    /// </summary>
     public static void HitAsteroid()
     {
         score += asteroidPoints;
     }
-
+    /// <summary>
+    /// Register hitting a Half Asteroid and score appropriately
+    /// </summary>
     public static void HitHalfAsteroid()
     {
         score += halfAsteroidPoints;
     }
-
+    /// <summary>
+    /// Start the Game
+    /// </summary>
     public static void StartGame()
     {
         isGameStarted = true;
         spawnFlag = true;
         spawnTime = DateTime.Now.AddSeconds(2);
     }
-
+    /// <summary>
+    /// Change the difficulty if the GameManager has already been initialized
+    /// </summary>
+    /// <param name="gameDifficulty"></param>
     public static void ChangeDifficulty(GameDifficulty gameDifficulty)
     {
         level = 1;
@@ -208,6 +231,9 @@ public static class GameManager
 
 }
 
+/// <summary>
+/// Enumeration for the game difficulty
+/// </summary>
 public enum GameDifficulty
 {
     Easy,

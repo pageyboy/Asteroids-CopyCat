@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// This class manages the audio for the game
+/// </summary>
 public static class AudioManager
 {
 
@@ -21,6 +23,9 @@ public static class AudioManager
         get { return initialized; }
     }
 
+    /// <summary>
+    /// Returns whether audio has been enabled via the button
+    /// </summary>
     public static bool IsSound
     {
         get { return audio; }
@@ -29,6 +34,10 @@ public static class AudioManager
     #endregion
 
     #region Methods
+    /// <summary>
+    /// Initializes the Audio Manager with various Audio clips from the enumeration
+    /// </summary>
+    /// <param name="source"></param>
     public static void Initialize(AudioSource source)
     {
         audio = true;
@@ -41,6 +50,10 @@ public static class AudioManager
         audioClips.Add(AudioClipName.Click, Resources.Load<AudioClip>(@"Audio\Click"));  
     }
 
+    /// <summary>
+    /// Plays an Audio clip
+    /// </summary>
+    /// <param name="name"></param>
     public static void Play(AudioClipName name)
     {
         if (audio)
@@ -49,6 +62,10 @@ public static class AudioManager
         }
     }
 
+    /// <summary>
+    /// Public method to toggle audio on or off via the button
+    /// </summary>
+    /// <param name="mute"></param>
     public static void ChangeAudioToMute(bool mute)
     {
         if (mute)

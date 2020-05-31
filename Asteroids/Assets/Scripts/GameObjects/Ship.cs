@@ -26,11 +26,11 @@ public class Ship : MonoBehaviour
     Vector2 thrustDirection;
     Text gameVitalsText;
 
+    // Fields to manage the rate of bullet fire
     const int bulletsPerSecond = 5;
     Timer bulletTimer;
 
     // Constants associated with movement
-
     const float ThrustForce = 10;
     const float RotateDegreesPerSecond = 360;
     float collCircleRadius;
@@ -46,6 +46,7 @@ public class Ship : MonoBehaviour
         collCircleRadius = gameObject.GetComponent<CircleCollider2D>().radius * 2;
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 
+        // Start the bullet lifetime
         bulletTimer = gameObject.AddComponent<Timer>();
         bulletTimer.Duration = 1f / bulletsPerSecond;
         bulletTimer.Run();
@@ -93,6 +94,8 @@ public class Ship : MonoBehaviour
             spriteRenderer.sprite = spriteShip;
         }
 
+        // Handle ship firing
+
         if (Input.GetAxis("Fire1") > 0)
         {
             if (bulletTimer.Finished)
@@ -109,11 +112,8 @@ public class Ship : MonoBehaviour
                 GameObject firstBullet = Instantiate<GameObject>(prefabBullet, gameObject.transform.position, shipRotation);
                 firstBullet.tag = "Bullet";
                 AudioManager.Play(AudioClipName.LaserGun);
-
-                // Spawn second bullet
-                Vector3 secondBulletLocation = gameObject.transform.position;
                 
-                
+                // Time it
                 bulletTimer.Run();
             }
         }
@@ -127,23 +127,35 @@ public class Ship : MonoBehaviour
         ScreenWrapper.AdjustPosition(gameObject, collCircleRadius);
     }
 
+    /// <summary>
+    /// Saw some weird behaviour with Angular velocity sometimes not being zeroed
+    /// Added in the other collision events to ensure that no Angular velocity is applied on collision
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionExit2D(Collision2D collision)
     {
         rigidbody2D.angularVelocity = 0;
     }
 
+    // As above
     private void OnCollisionStay2D(Collision2D collision)
     {
         rigidbody2D.angularVelocity = 0;
     }
 
+    /// <summary>
+    /// Main event handling the collision of the ship with an object
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
         rigidbody2D.angularVelocity = 0;
-            GameManager.DecreaseHealth();
+        // Decrase the health of the ship
+        GameManager.DecreaseHealth();
+            // If the ship is dead then find all gameobjects that'll be left Asteroids and bullets and destroy them all
             if (GameManager.Health == 0)
             {
-                      List<GameObject> allTargets = new List<GameObject>();
+                List<GameObject> allTargets = new List<GameObject>();
                 GameObject[] targets = GameObject.FindGameObjectsWithTag("AsteroidHalf");
                 allTargets.AddRange(targets);
                 targets = GameObject.FindGameObjectsWithTag("AsteroidGreen");
@@ -158,6 +170,7 @@ public class Ship : MonoBehaviour
                 {
                     Destroy(gObject);
                 }
+                // Play game over sound and destroy ship
                 AudioManager.Play(AudioClipName.GameOver);
                 Destroy(gameObject);
         }

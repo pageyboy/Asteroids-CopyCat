@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// A timer
+/// A timer for adding to game objects and timing
 /// </summary>
 public class Timer : MonoBehaviour {
 	

@@ -6,11 +6,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System;
-using UnityEditor.Compilation;
+
+/// <summary>
+/// Handle the buttons on the Game Menu
+/// </summary>
 
 public class ButtonHandler : MonoBehaviour
 {
-
+    #region Fields
     public Button prefabNewGameButton;
     public Button prefabEasyRadio;
     public Button prefabMediumRadio;
@@ -34,20 +37,20 @@ public class ButtonHandler : MonoBehaviour
     TMP_Text tmpMedium;
     TMP_Text tmpHard;
     Image audioImage;
+    #endregion
 
+    // Fields for handling button flashing
     float flashStep;
     const int flashLength = 1;
     bool flashPlace = true; //true = up / false = down
 
+    // Game difficulty based on the Enumeration
     GameDifficulty gameDifficulty;
-
-    DateTime nextHorizontalAllowed = DateTime.Now.AddSeconds(-2);
-
-    bool horizontalPositiveLast;
 
     // Start is called before the first frame update
     void Start()
     {
+        // Initialize all of the buttons and add their methods on clicking
         btnNewGame = prefabNewGameButton.GetComponent<Button>();
         btnNewGame.onClick.AddListener(NewGame);
         btnEasy = prefabEasyRadio.GetComponent<Button>();
@@ -63,10 +66,12 @@ public class ButtonHandler : MonoBehaviour
         btnCredits = prefabCredits.GetComponent<Button>();
         btnCredits.onClick.AddListener(LinkToCredits);
 
+        // Get the TextMeshPro components for color manipulation
         tmpEasy = btnEasy.GetComponentInChildren<TMP_Text>(true);
         tmpMedium = btnMedium.GetComponentInChildren<TMP_Text>(true);
         tmpHard = btnHard.GetComponentInChildren<TMP_Text>(true);
 
+        // Set the audio image
         audioImage = btnAudio.GetComponent<Image>();
 
         if (AudioManager.IsSound)
@@ -77,21 +82,26 @@ public class ButtonHandler : MonoBehaviour
             audioImage.sprite = audioMute;
         }
 
+        // Initialize the game if not already initialized
         if (GameManager.Initialized)
         {
             gameDifficulty = GameManager.GameDifficulty;
         } else
         {
-            gameDifficulty = GameDifficulty.Hard;
+            gameDifficulty = GameDifficulty.Medium;
         }
 
+        // Set the button flashing parameters
         flashStep = 1 / (float)flashLength;
 
     }
 
+    /// <summary>
+    /// Load a new gmae
+    /// </summary>
     void NewGame()
     {
-        // initialize screen utils
+        // Initialize GameManager if required
         if (!GameManager.Initialized)
         {
             GameManager.Initialize(gameDifficulty);
@@ -99,9 +109,13 @@ public class ButtonHandler : MonoBehaviour
         {
             GameManager.ChangeDifficulty(gameDifficulty);
         }
+        // Switch to the Game Scene
         SceneManager.LoadScene(1, LoadSceneMode.Single);
     }
 
+    /// <summary>
+    /// Switch the difficulty selected. This also sets the button flashing too
+    /// </summary>
     void SwitchDifficulty()
     {
 
@@ -124,64 +138,65 @@ public class ButtonHandler : MonoBehaviour
                 tmpHard.color = new Color(0, 0, 1, 1);
                 break;
         }
-
-        print(gameDifficulty);
     }
 
+    /// <summary>
+    /// For handling the input manager
+    /// </summary>
     private void Update()
     {
-        if (Input.GetAxis("Submit") > 0)
+        if (Input.anyKeyDown)
         {
-            NewGame();
-        }
-        float inputValueHorizontal = Input.GetAxis("Horizontal");
-        if (inputValueHorizontal != 0 &&
-            (DateTime.Now > nextHorizontalAllowed || (inputValueHorizontal > 0 == !horizontalPositiveLast) || (inputValueHorizontal < 0 == horizontalPositiveLast)))
-        {
-            AudioManager.Play(AudioClipName.Click);
-            tmpEasy.color = new Color(1, 1, 1, 1);
-            tmpMedium.color = new Color(1, 1, 1, 1);
-            tmpHard.color = new Color(1, 1, 1, 1);
-            nextHorizontalAllowed = DateTime.Now.AddMilliseconds(500);
-            if (inputValueHorizontal > 0)
+            if (Input.GetAxis("Submit") > 0)
             {
-                horizontalPositiveLast = true;
-                switch (gameDifficulty)
+                NewGame();
+            }
+            float inputValueHorizontal = Input.GetAxis("Horizontal");
+            if (inputValueHorizontal != 0)
+            {
+                AudioManager.Play(AudioClipName.Click);
+                tmpEasy.color = new Color(1, 1, 1, 1);
+                tmpMedium.color = new Color(1, 1, 1, 1);
+                tmpHard.color = new Color(1, 1, 1, 1);
+                if (inputValueHorizontal > 0)
                 {
-                    case GameDifficulty.Easy:
-                        gameDifficulty = GameDifficulty.Medium;
-                        tmpMedium.color = new Color(0, 0, 1, 1);
-                        break;
-                    case GameDifficulty.Medium:
-                        gameDifficulty = GameDifficulty.Hard;
-                        tmpHard.color = new Color(0, 0, 1, 1);
-                        break;
-                    case GameDifficulty.Hard:
-                        gameDifficulty = GameDifficulty.Easy;
-                        tmpEasy.color = new Color(0, 0, 1, 1);
-                        break;
-                    default:
-                        break;
+                    switch (gameDifficulty)
+                    {
+                        case GameDifficulty.Easy:
+                            gameDifficulty = GameDifficulty.Medium;
+                            tmpMedium.color = new Color(0, 0, 1, 1);
+                            break;
+                        case GameDifficulty.Medium:
+                            gameDifficulty = GameDifficulty.Hard;
+                            tmpHard.color = new Color(0, 0, 1, 1);
+                            break;
+                        case GameDifficulty.Hard:
+                            gameDifficulty = GameDifficulty.Easy;
+                            tmpEasy.color = new Color(0, 0, 1, 1);
+                            break;
+                        default:
+                            break;
+                    }
                 }
-            } else
-            {
-                horizontalPositiveLast = false;
-                switch (gameDifficulty)
+                else
                 {
-                    case GameDifficulty.Easy:
-                        gameDifficulty = GameDifficulty.Hard;
-                        tmpHard.color = new Color(0, 0, 1, 1);
-                        break;
-                    case GameDifficulty.Medium:
-                        gameDifficulty = GameDifficulty.Easy;
-                        tmpEasy.color = new Color(0, 0, 1, 1);
-                        break;
-                    case GameDifficulty.Hard:
-                        gameDifficulty = GameDifficulty.Medium;
-                        tmpMedium.color = new Color(0, 0, 1, 1);
-                        break;
-                    default:
-                        break;
+                    switch (gameDifficulty)
+                    {
+                        case GameDifficulty.Easy:
+                            gameDifficulty = GameDifficulty.Hard;
+                            tmpHard.color = new Color(0, 0, 1, 1);
+                            break;
+                        case GameDifficulty.Medium:
+                            gameDifficulty = GameDifficulty.Easy;
+                            tmpEasy.color = new Color(0, 0, 1, 1);
+                            break;
+                        case GameDifficulty.Hard:
+                            gameDifficulty = GameDifficulty.Medium;
+                            tmpMedium.color = new Color(0, 0, 1, 1);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
@@ -201,6 +216,11 @@ public class ButtonHandler : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Returns a colour to set the button to that's flashing
+    /// </summary>
+    /// <param name="btnTMP"></param>
+    /// <returns></returns>
     Color ButtonFlash(TMP_Text btnTMP)
     {
         Color btnTextColor = btnTMP.color;
@@ -238,6 +258,9 @@ public class ButtonHandler : MonoBehaviour
         return btnTextColor;
     }
 
+    /// <summary>
+    /// Handles the Audio button being toggled
+    /// </summary>
     void ToggleAudio()
     {
         if (Input.GetAxis("Submit") == 0)
@@ -256,6 +279,9 @@ public class ButtonHandler : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Handles the two buttons to Github and credits
+    /// </summary>
     void LinkToCredits()
     {
         if (Input.GetAxis("Submit") == 0)
@@ -267,6 +293,7 @@ public class ButtonHandler : MonoBehaviour
     void LinkToGithub()
     {
         if (Input.GetAxis("Submit") == 0)
+        { 
             Application.ExternalEval("window.open(\"https://github.com/pageyboy/Asteroids-CopyCat\")");
         }
     }

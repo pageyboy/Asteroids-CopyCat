@@ -26,6 +26,7 @@ public class GameInitializer : MonoBehaviour
         gameTimer = gameObject.AddComponent<Timer>();
     }
 
+    // Check whether Asteroids should be spawned
     private void Update()
     {
         if (GameManager.SpawnFlag == true && DateTime.Now > GameManager.SpawnTime && GameManager.IsGameStarted)
