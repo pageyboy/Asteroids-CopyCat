@@ -129,6 +129,7 @@ public class ButtonHandler : MonoBehaviour
         if (inputValueHorizontal != 0 &&
             (DateTime.Now > nextHorizontalAllowed || (inputValueHorizontal > 0 == !horizontalPositiveLast) || (inputValueHorizontal < 0 == horizontalPositiveLast)))
         {
+            AudioManager.Play(AudioClipName.Click);
             tmpEasy.color = new Color(1, 1, 1, 1);
             tmpMedium.color = new Color(1, 1, 1, 1);
             tmpHard.color = new Color(1, 1, 1, 1);

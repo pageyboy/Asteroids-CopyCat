@@ -38,6 +38,7 @@ public static class AudioManager
         audioClips.Add(AudioClipName.GameOver, Resources.Load<AudioClip>(@"Audio\GameOver"));
         audioClips.Add(AudioClipName.AsteroidDeath, Resources.Load<AudioClip>(@"Audio\AsteroidDeath"));
         audioClips.Add(AudioClipName.LevelUp, Resources.Load<AudioClip>(@"Audio\LevelUp"));  
+        audioClips.Add(AudioClipName.Click, Resources.Load<AudioClip>(@"Audio\Click"));  
     }
 
     public static void Play(AudioClipName name)

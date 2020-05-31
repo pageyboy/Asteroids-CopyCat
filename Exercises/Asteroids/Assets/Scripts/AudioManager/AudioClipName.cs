@@ -6,5 +6,6 @@ public enum AudioClipName
     LaserGun,
     GameOver,
     AsteroidDeath,
-    LevelUp
+    LevelUp,
+    Click
 }

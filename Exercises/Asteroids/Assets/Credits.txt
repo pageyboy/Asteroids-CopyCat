@@ -1,0 +1,16 @@
+Background Image: https://www.gamedevelopment.blog/full-unity-2d-game-tutorial-2019-background-and-camera/
+
+Sprites:
+Music Note: https://ya-webdesign.com/imgdownload.html
+Asteroids: Provided by Course Tutor (Dr Tim Chamillard) on Coursera.org. http://www.burningteddy.com/
+Health Bar & Heart: Provided by Brackeys https://youtu.be/BLfNP4Sc_iA
+Bullet: http://pixelartmaker.com/art/1e808817febb22a
+Spaceship: https://www.hiclipart.com/free-transparent-background-png-clipart-irmfg
+Spaceship Fire: https://ya-webdesign.com/imgdownload.html#.XtNrXXmOkSs
+
+All sounds from Freesound.org
+Click: https://freesound.org/people/gusgus26/sounds/415090/
+Laser: https://freesound.org/people/Dpoggioli/sounds/196914/
+GameOver: https://freesound.org/people/myfox14/sounds/382310/
+LevelUp: https://freesound.org/people/josepharaoh99/sounds/368651/
+Asteroid Death: https://freesound.org/people/MATTIX/sounds/459150/
