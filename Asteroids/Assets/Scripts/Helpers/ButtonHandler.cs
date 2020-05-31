@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System;
+using UnityEditor.Compilation;
 
 public class ButtonHandler : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class ButtonHandler : MonoBehaviour
     public Button prefabMediumRadio;
     public Button prefabHardRadio;
     public Button prefabAudioToggle;
+    public Button prefabGithub;
+    public Button prefabCredits;
 
     public Sprite audioMute;
     public Sprite audioOn;
@@ -24,6 +27,8 @@ public class ButtonHandler : MonoBehaviour
     Button btnMedium;
     Button btnHard;
     Button btnAudio;
+    Button btnGithub;
+    Button btnCredits;
 
     TMP_Text tmpEasy;
     TMP_Text tmpMedium;
@@ -53,6 +58,10 @@ public class ButtonHandler : MonoBehaviour
         btnHard.onClick.AddListener(SwitchDifficulty);
         btnAudio = prefabAudioToggle.GetComponent<Button>();
         btnAudio.onClick.AddListener(ToggleAudio);
+        btnGithub = prefabGithub.GetComponent<Button>();
+        btnGithub.onClick.AddListener(LinkToGithub);
+        btnCredits = prefabCredits.GetComponent<Button>();
+        btnCredits.onClick.AddListener(LinkToCredits);
 
         tmpEasy = btnEasy.GetComponentInChildren<TMP_Text>(true);
         tmpMedium = btnMedium.GetComponentInChildren<TMP_Text>(true);
@@ -245,6 +254,21 @@ public class ButtonHandler : MonoBehaviour
             }
         }
 
+    }
+
+    void LinkToCredits()
+    {
+        if (Input.GetAxis("Submit") == 0)
+        {
+            Application.ExternalEval("window.open(\"https://github.com/pageyboy/Asteroids-CopyCat/blob/master/Asteroids/Assets/Credits.txt\")");
+        }
+    }
+
+    void LinkToGithub()
+    {
+        if (Input.GetAxis("Submit") == 0)
+            Application.ExternalEval("window.open(\"https://github.com/pageyboy/Asteroids-CopyCat\")");
+        }
     }
 
 }
